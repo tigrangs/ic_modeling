@@ -1,0 +1,26 @@
+# ignore executable
+mercurius
+mercurius-d
+mercurius.exe
+mercurius.exe-d
+mercurius-d.exe
+resource_converter
+resource_converter-d
+resource_converter.exe
+resource_converter.exe-d
+resource_converter-d.exe
+*.stackdump
+# ignore dlls
+*.dll
+# ignore build bat file
+build.bat
+# ignore objects directories
+objs/
+objs-d/
+objs_rc/
+objs_rc-d/
+win_obj
+# ignore all tmp backup files
+*~
+.*.swp
+.*.swo

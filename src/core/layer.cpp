@@ -1,15 +1,18 @@
 #include "layer.hpp"
+#include "cell.hpp"
 
 namespace core
 {
 
-layer::layer(int id, unsigned width, unsigned height)
+layer::layer(unsigned id, unsigned width, unsigned height)
     : m_id(id)
     , m_width(width)
     , m_height(height)
-{}
+{
 
-int layer::id() const
+}
+
+unsigned layer::id() const
 {
     return m_id;
 }

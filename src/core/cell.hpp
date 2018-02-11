@@ -15,13 +15,11 @@ private:
     unsigned m_layer;
 
 public:
-    void value() const;
+    int value() const;
     void set_value(int);
 
 private:
     int m_value;
-
-
 };
 
 }

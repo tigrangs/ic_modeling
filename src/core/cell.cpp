@@ -1,6 +1,6 @@
 #include "cell.hpp"
 
-namespace cell
+namespace core
 {
 
 cell::cell(unsigned r, unsigned c, unsigned l)
@@ -11,12 +11,12 @@ cell::cell(unsigned r, unsigned c, unsigned l)
 {
 }
 
-void cell::value() const
+int cell::value() const
 {
     return m_value;
 }
 
-int cell::set_value(int v)
+void cell::set_value(int v)
 {
     m_value = v;
 }
