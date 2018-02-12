@@ -18,6 +18,9 @@ public:
     int value() const;
     void set_value(int);
 
+public:
+    void dump() const;
+
 private:
     int m_value;
 };

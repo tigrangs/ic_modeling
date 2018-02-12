@@ -15,11 +15,18 @@ public:
 
 public:
     layer(unsigned id, unsigned width, unsigned height);
+    ~layer();
 
 public:
     unsigned id() const;
     unsigned width() const;
     unsigned height() const;
+
+public:
+    void dump() const;
+
+private:
+    void init();
 
 private:
     unsigned m_id;

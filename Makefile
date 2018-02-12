@@ -3,12 +3,6 @@ COMPILER ?= g++
 COMPILERFLAGS ?= -Wall -Werror -Wextra -Weffc++ -std=c++11
 LINKERFLAGS ?=
 # lib options for compiler
-ifeq ($(OS), Windows_NT)
-    OPENGL_LIBS ?= -lglew32 -lopengl32 -lglu32
-else
-    OPENGL_LIBS ?= -lGLEW -lGL -lGLU
-endif
-ENGINE_LIBS ?= -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer $(OPENGL_LIBS)
 # source and objcet directorys
 SRC_DIR ?= src
 OBJ_DIR ?= objs
@@ -17,7 +11,7 @@ OBJ_DIR_D := $(addsuffix -d, $(OBJ_DIR))
 DEF_FLAGS += -D_GCC_COMPILER_
 DEF_FLAGS += $(addprefix -D, $(DEFINES))
 # name of executable (program)
-execable ?= mercurius
+execable ?= ic_modeling
 execable_d := $(addsuffix -d,$(abspath $(execable)))
 # autodetect projects in SRC_DIR
 PROJECT_DIRS := $(sort $(dir $(abspath $(wildcard $(SRC_DIR)/*/*.hpp))))
