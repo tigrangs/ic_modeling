@@ -47,4 +47,9 @@ unsigned layer::height() const
     return m_height;
 }
 
+void layer::dump() const
+{
+}
+
+
 }
