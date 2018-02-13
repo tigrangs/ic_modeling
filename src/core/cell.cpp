@@ -41,6 +41,11 @@ void cell::set_value(int v)
 
 void cell::dump(std::string& s) const
 {
+    const std::string i = std::to_string(m_row);
+    const std::string j = std::to_string(m_column);
+    const std::string k = std::to_string(m_layer->id());
+    s += "\n";
+    s += "* Cell " + i + space + j + space + k + " *";
     dump_R(s);
     dump_Rsub(s);
     assert(m_layer != 0);
@@ -115,11 +120,10 @@ void cell::dump_Rsub(std::string& s) const
     tmp += j;
     tmp += devider;
     tmp += k;
-    tmp += devider;
     tmp += _s;
 
     if (m_layer->id() == 0) {
-        tmp += vss;
+        tmp += space + vss;
     } else {
         tmp += space;
         tmp += c;

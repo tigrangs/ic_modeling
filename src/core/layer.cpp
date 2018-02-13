@@ -1,6 +1,8 @@
 #include "layer.hpp"
 #include "cell.hpp"
 
+#include <cassert>
+
 namespace core
 {
 
@@ -47,8 +49,15 @@ unsigned layer::height() const
     return m_height;
 }
 
-void layer::dump() const
+void layer::dump(std::string& s) const
 {
+        for (unsigned i = 0; i < m_height; ++i) {
+                for (unsigned j = 0; j < m_width; ++j) {
+                        cell* c = m_cells[i][j];
+                        assert(c != 0);
+                        c->dump(s);
+                }
+        }
 }
 
 

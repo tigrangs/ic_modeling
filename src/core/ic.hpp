@@ -2,6 +2,7 @@
 #define IC_HPP
 
 #include <vector>
+#include <string>
 
 namespace core
 {
@@ -18,7 +19,13 @@ public:
         ~ic();
 
 public:
-        void dump() const;
+        void dump(std::string&) const;
+
+public:
+        int layers_count() const;
+
+public:
+        layer* get_layer(int);
 
 private:
         layers m_layers = {};

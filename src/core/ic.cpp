@@ -20,13 +20,26 @@ ic::~ic()
         }
 }
 
-void ic::dump() const
+void ic::dump(std::string& s) const
 {
         for (unsigned i = 0; i < m_layers.size(); ++i) {
             layer* l = m_layers[i];
             assert(l != 0);
-            l->dump();
+            s += "\n";
+            s += "******************* Layer" + std::to_string(i) + " **********************";
+            l->dump(s);
         }
+}
+
+int ic::layers_count() const
+{
+    return m_layers.size();
+}
+
+layer* ic::get_layer(int i)
+{
+    assert(i < layers_count());
+    return m_layers[i];
 }
 
 }

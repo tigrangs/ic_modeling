@@ -2,6 +2,7 @@
 #define LAYER_HPP
 
 #include <vector>
+#include <string>
 
 namespace core
 {
@@ -23,7 +24,7 @@ public:
     unsigned height() const;
 
 public:
-    void dump() const;
+    void dump(std::string&) const;
 
 private:
     void init();
