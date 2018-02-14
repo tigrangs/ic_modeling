@@ -19,8 +19,8 @@ private:
     const layer* m_layer;
 
 public:
-    int value() const;
-    void set_value(int);
+    double value() const;
+    void set_value(double);
 
 public:
     void dump(std::string&) const;
@@ -34,7 +34,7 @@ private:
     void dump_r_bottom(std::string&) const;
 
 private:
-    int m_value;
+    double m_value;
 };
 
 }

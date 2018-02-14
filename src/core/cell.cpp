@@ -29,12 +29,12 @@ cell::cell(unsigned r, unsigned c, const layer* l)
 {
 }
 
-int cell::value() const
+double cell::value() const
 {
     return m_value;
 }
 
-void cell::set_value(int v)
+void cell::set_value(double v)
 {
     m_value = v;
 }

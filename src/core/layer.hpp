@@ -24,6 +24,10 @@ public:
     unsigned height() const;
 
 public:
+    void set_cell_value(unsigned r, unsigned c, double v);
+    double get_cell_value(unsigned r, unsigned c);
+
+public:
     void dump(std::string&) const;
 
 private:

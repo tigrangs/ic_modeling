@@ -3,6 +3,7 @@ ic_modeling
 ic_modeling-d
 ic_modeling.exe-d
 ic_modeling-d.exe
+ic_modeling.exe
 *.stackdump
 # ignore dlls
 *.dll
