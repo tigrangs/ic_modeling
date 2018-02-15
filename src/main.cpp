@@ -1,6 +1,6 @@
 #include <core/ic.hpp>
 #include <core/layer.hpp>
-#include <gui/window.hpp>
+#include <gui/thermal_window.hpp>
 
 #include <QApplication>
 #include <iostream>
@@ -13,7 +13,6 @@ int main(int argc, char** argv)
     std::cout<<s<<std::endl;
     QApplication app(argc, argv);
     gui::thermal_window w;
-//    w.fill_data(&l);
-//    w.show();
+    w.show();
     return app.exec();
 }

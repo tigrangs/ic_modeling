@@ -1,4 +1,4 @@
-#include "window.hpp"
+#include "thermal_window.hpp"
 
 #include <core/layer.hpp>
 
@@ -41,13 +41,12 @@ void thermal_window::init()
     m_surface->setAxisY(new QValue3DAxis);
     m_surface->setAxisZ(new QValue3DAxis);
 
-//    m_proxy = new QSurfaceDataProxy();
-    m_series = new QSurface3DSeries(/*m_proxy*/);
+    m_series = new QSurface3DSeries();
     QHBoxLayout* l = new QHBoxLayout();
     l->setMargin(0);
     l->addWidget(container);
     setLayout(l);
-    show();
+
     core::layer*  m_layer = new core::layer(0, 200, 200);
     for (unsigned i = 0; i< m_layer->height(); ++i) {
         for (unsigned j = 0; j < m_layer->width(); ++j) {
@@ -61,11 +60,10 @@ void thermal_window::fill_data(core::layer* l)
 {
     QSurfaceDataArray *dataArray = new QSurfaceDataArray;
     std::cout<<l->height()<<std::endl;
-    dataArray->reserve(l->height());
+    dataArray->reserve(2*l->height()); //QT_BUG
     double max_value = 0;
     for (unsigned i = 0 ; i < 2*l->height() ; ++i) { //QT_BUG
         QSurfaceDataRow *newRow = new QSurfaceDataRow;
-//        int index = 0;
         for (unsigned j = 0; j < 2*l->width(); ++j) { //QT_BUG
             if (i >= l->height() || j >= l->width()) {
                 (*newRow) << QVector3D(i, 0, j);
@@ -74,22 +72,17 @@ void thermal_window::fill_data(core::layer* l)
                 if (max_value < v) {
                     max_value = v;
                 }
-//                std::cout<<"i= "<<i<<"\t"<<"j= "<<j<<std::endl;
                 (*newRow) << QVector3D(i, v, j);
             }
         }
         *dataArray << newRow;
-//        std::cout<<"new Row size "<<newRow->size()<<std::endl;
     }
     std::cout<<dataArray->size()<<std::endl;
 
     m_series->dataProxy()->resetArray(dataArray);
 
-/*    std::cout<<m_proxy->columnCount()<<std::endl;
-    std::cout<<m_proxy->rowCount()<<std::endl;*/
-
     m_series->setDrawMode(QSurface3DSeries::DrawSurfaceAndWireframe);
-    m_series->setFlatShadingEnabled(true);
+//    m_series->setFlatShadingEnabled(true);
 
     m_surface->axisX()->setLabelFormat("%.2f");
     m_surface->axisZ()->setLabelFormat("%.2f");
@@ -108,6 +101,7 @@ void thermal_window::fill_data(core::layer* l)
 
     m_surface->setSelectionMode(QAbstract3DGraph::SelectionItem);
     m_surface->activeTheme()->setType(Q3DTheme::Theme(2));
+
     QLinearGradient gr;
     gr.setColorAt(0.0, Qt::darkGreen);
     gr.setColorAt(0.5, Qt::yellow);

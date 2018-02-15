@@ -1,5 +1,5 @@
-#ifndef WINDOW_HPP
-#define WINDOW_HPP
+#ifndef THERMAL_WINDOW_HPP
+#define THERMAL_WINDOW_HPP
 
 #include <QtDataVisualization/Q3DSurface>
 #include <QtDataVisualization/QSurfaceDataProxy>
@@ -33,7 +33,6 @@ public:
 
 private:
     Q3DSurface* m_surface = 0;
-    QSurfaceDataProxy* m_proxy = 0;
     QSurface3DSeries* m_series = 0;
     core::layer* m_layer = 0;
 
@@ -44,4 +43,4 @@ public slots:
 
 }
 
-#endif // WINDOW_HPP
+#endif // THERMAL_WINDOW_HPP
