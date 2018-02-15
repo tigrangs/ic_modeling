@@ -35,6 +35,7 @@ private:
     Q3DSurface* m_surface = 0;
     QSurfaceDataProxy* m_proxy = 0;
     QSurface3DSeries* m_series = 0;
+    core::layer* m_layer = 0;
 
 signals:
 

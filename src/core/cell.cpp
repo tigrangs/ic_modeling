@@ -88,7 +88,6 @@ void cell::dump_R(std::string& s) const
     tmp += j;
     tmp += devider;
     tmp += k;
-    tmp += devider;
     tmp += _s;
 
     tmp += space;

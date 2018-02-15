@@ -6,6 +6,11 @@
 #include <QMessageBox>
 #include <QScreen>
 
+#include <iostream>
+
+#include <QtDataVisualization/QValue3DAxis>
+#include <QtDataVisualization/Q3DTheme>
+
 namespace gui
 {
 
@@ -36,52 +41,81 @@ void thermal_window::init()
     m_surface->setAxisY(new QValue3DAxis);
     m_surface->setAxisZ(new QValue3DAxis);
 
-    m_proxy = new QSurfaceDataProxy();
-    m_series = new QSurface3DSeries(m_proxy);
-    m_surface->addSeries(m_series);
-    m_series->setDrawMode(QSurface3DSeries::DrawSurfaceAndWireframe);
-//    m_series->setFlatShadingEnabled(true);
-    m_surface->axisX()->setLabelAutoRotation(30);
-    m_surface->axisY()->setLabelAutoRotation(90);
-    m_surface->axisZ()->setLabelAutoRotation(30);
-
-    QLinearGradient gr;
-    gr.setColorAt(0.0, Qt::darkGreen);
-    gr.setColorAt(0.5, Qt::yellow);
-    gr.setColorAt(0.8, Qt::red);
-    gr.setColorAt(1.0, Qt::darkRed);
-
-    m_surface->seriesList().at(0)->setBaseGradient(gr);
-    m_surface->seriesList().at(0)->setColorStyle(Q3DTheme::ColorStyleRangeGradient);
-    /*m_surface->axisX()->setLabelFormat("%.2f");
-    m_surface->axisZ()->setLabelFormat("%.2f");*/
+//    m_proxy = new QSurfaceDataProxy();
+    m_series = new QSurface3DSeries(/*m_proxy*/);
     QHBoxLayout* l = new QHBoxLayout();
     l->setMargin(0);
     l->addWidget(container);
     setLayout(l);
+    show();
+    core::layer*  m_layer = new core::layer(0, 200, 200);
+    for (unsigned i = 0; i< m_layer->height(); ++i) {
+        for (unsigned j = 0; j < m_layer->width(); ++j) {
+            m_layer->set_cell_value(i, j, i+j);
+        }
+    }
+    fill_data(m_layer);
 }
 
 void thermal_window::fill_data(core::layer* l)
 {
     QSurfaceDataArray *dataArray = new QSurfaceDataArray;
+    std::cout<<l->height()<<std::endl;
     dataArray->reserve(l->height());
     double max_value = 0;
-    for (int i = 0 ; i < l->height() ; ++i) {
-        QSurfaceDataRow *newRow = new QSurfaceDataRow(l->width());
-        int index = 0;
-        for (int j = 0; j < l->width(); ++j) {
-            double v = l->get_cell_value(i, j);
-            if (max_value < v) {
-                max_value = v;
+    for (unsigned i = 0 ; i < 2*l->height() ; ++i) { //QT_BUG
+        QSurfaceDataRow *newRow = new QSurfaceDataRow;
+//        int index = 0;
+        for (unsigned j = 0; j < 2*l->width(); ++j) { //QT_BUG
+            if (i >= l->height() || j >= l->width()) {
+                (*newRow) << QVector3D(i, 0, j);
+            } else {
+                double v = l->get_cell_value(i, j);
+                if (max_value < v) {
+                    max_value = v;
+                }
+//                std::cout<<"i= "<<i<<"\t"<<"j= "<<j<<std::endl;
+                (*newRow) << QVector3D(i, v, j);
             }
-            (*newRow)[index++].setPosition(QVector3D(2*i, 2*v, 2*j));
         }
         *dataArray << newRow;
+//        std::cout<<"new Row size "<<newRow->size()<<std::endl;
     }
-    m_surface->axisX()->setRange(0, l->width());
+    std::cout<<dataArray->size()<<std::endl;
+
+    m_series->dataProxy()->resetArray(dataArray);
+
+/*    std::cout<<m_proxy->columnCount()<<std::endl;
+    std::cout<<m_proxy->rowCount()<<std::endl;*/
+
+    m_series->setDrawMode(QSurface3DSeries::DrawSurfaceAndWireframe);
+    m_series->setFlatShadingEnabled(true);
+
+    m_surface->axisX()->setLabelFormat("%.2f");
+    m_surface->axisZ()->setLabelFormat("%.2f");
+
+    m_surface->axisX()->setRange(0, l->width() - 1);
     m_surface->axisY()->setRange(0, max_value);
-    m_surface->axisZ()->setRange(0, l->height());
-    m_proxy->resetArray(dataArray);
+    m_surface->axisZ()->setRange(0, l->height() - 1);
+
+    m_surface->axisX()->setLabelAutoRotation(30);
+    m_surface->axisY()->setLabelAutoRotation(90);
+    m_surface->axisZ()->setLabelAutoRotation(30);
+
+
+
+    m_surface->addSeries(m_series);
+
+    m_surface->setSelectionMode(QAbstract3DGraph::SelectionItem);
+    m_surface->activeTheme()->setType(Q3DTheme::Theme(2));
+    QLinearGradient gr;
+    gr.setColorAt(0.0, Qt::darkGreen);
+    gr.setColorAt(0.5, Qt::yellow);
+    gr.setColorAt(0.8, Qt::red);
+    gr.setColorAt(1.0, Qt::darkRed);
+    m_surface->seriesList().at(0)->setBaseGradient(gr);
+    m_surface->seriesList().at(0)->setColorStyle(Q3DTheme::ColorStyleRangeGradient);
+
 }
 
 }
