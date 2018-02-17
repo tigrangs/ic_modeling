@@ -3,16 +3,15 @@
 namespace files_parser
 {
 
-power_cell::power_cell(const std::string& n,
-                       position p,
-                       double w,
-                       double h,
-                       double pw)
+power_cell::power_cell(const std::string& n, position p,
+                       double w, double h,
+                       double pw, unsigned l)
     : m_name(n)
     , m_pos(p)
     , m_width(w)
     , m_height(h)
     , m_power(pw)
+    , m_layer(l)
 {
 }
 
@@ -40,6 +39,11 @@ double power_cell::height() const
 double power_cell::power() const
 {
     return m_power;
+}
+
+unsigned power_cell::layer() const
+{
+    return m_layer;
 }
 
 }

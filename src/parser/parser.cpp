@@ -37,9 +37,18 @@ double parser::get_value_of(const data_map& m, const std::string& n) const
 {
     data_map::ConstIterator it = m.find(QString::fromStdString(n));
     if (it == m.end()) {
-        throw exception("Syntax error: " + n + " =<value>");
+        throw exception("Syntax error: " + n + "=<value>");
     }
     return it.value().toDouble();
+}
+
+unsigned parser::get_layer(const data_map& m) const
+{
+    data_map::ConstIterator it = m.find("layer");
+    if (it == m.end()) {
+        throw exception("Syntax error: layer=<value>");
+    }
+    return it.value().toUInt();
 }
 
 power_cell::position parser::get_position(const data_map& m) const
@@ -104,7 +113,8 @@ parser::power_cells parser::get_cells(const std::string& f)
         double w = get_value_of(m, "width");
         double h = get_value_of(m, "height");
         double pw = get_value_of(m, "power");
-        cells.push_back(power_cell(name, p, w, h, pw));
+        unsigned l = get_layer(m);
+        cells.push_back(power_cell(name, p, w, h, pw, l));
 
         // Next cell
         data = file.readLine();

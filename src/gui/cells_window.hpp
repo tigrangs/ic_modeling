@@ -19,7 +19,7 @@ public:
 private:
     void init();
 
-private:
+public:
     void fill_data(const files_parser::parser::power_cells&);
 
 private:

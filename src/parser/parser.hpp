@@ -31,7 +31,10 @@ public:
             : m_error(e)
         {}
     public:
-        const std::string& what() const;
+        const std::string& what() const
+        {
+            return m_error;
+        }
 
     private:
         const std::string m_error;
@@ -50,6 +53,7 @@ private:
     std::string get_name(const data_map& m) const;
     power_cell::position get_position(const data_map&) const;
     double get_value_of(const data_map&, const std::string&) const;
+    unsigned get_layer(const data_map&) const;
 
 private:
     parser(const parser&) = delete;

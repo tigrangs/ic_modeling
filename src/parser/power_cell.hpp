@@ -17,7 +17,8 @@ public:
                position p,
                double w,
                double h,
-               double pw);
+               double pw,
+               unsigned l);
 
 
 public:
@@ -26,7 +27,7 @@ public:
     double width() const;
     double height() const;
     double power() const;
-
+    unsigned layer() const;
 
 private:
     const std::string m_name;
@@ -34,6 +35,7 @@ private:
     double m_width;
     double m_height;
     double m_power;
+    unsigned m_layer;
 
 };
 
