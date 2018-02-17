@@ -15,6 +15,29 @@ power_cell::power_cell(const std::string& n, position p,
 {
 }
 
+/*power_cell& power_cell::operator=(const power_cell& c)
+{
+    if (&c == this) {
+        return *this;
+    }
+    m_name = c.m_name;
+    m_pos = c.m_pos;
+    m_width = c.m_width;
+    m_height = c.m_height;
+    m_power = c.m_power;
+    m_layer = c.m_layer;
+    return *this;
+}
+
+power_cell::power_cell(const power_cell& c)
+{
+    m_name = c.m_name;
+    m_pos = c.m_pos;
+    m_width = c.m_width;
+    m_height = c.m_height;
+    m_power = c.m_power;
+    m_layer = c.m_layer;
+}*/
 
 const std::string& power_cell::name() const
 {

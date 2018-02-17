@@ -6,6 +6,8 @@
 namespace gui
 {
 
+class layers_gallery;
+
 class main_window : public QMainWindow
 {
     Q_OBJECT
@@ -23,7 +25,8 @@ private:
     void init_toolbar();
 
 private:
-    QToolBar* m_tools;
+    QToolBar* m_tools = 0;
+    layers_gallery* m_gallery = 0;
 };
 
 }

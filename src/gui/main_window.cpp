@@ -1,4 +1,5 @@
 #include "main_window.hpp"
+#include "layers_gallery.hpp"
 
 #include <parser/parser.hpp>
 
@@ -21,6 +22,9 @@ main_window::main_window(QWidget *parent)
 
 void main_window::init()
 {
+    setMinimumSize(800, 800);
+    m_gallery = new layers_gallery(this);
+    setCentralWidget(m_gallery);
     init_toolbar();
     init_actions();
 }
@@ -49,7 +53,8 @@ void main_window::load_ic()
     assert(p != 0);
     try {
         files_parser::parser::power_cells cells = p->get_cells(f.toStdString());
-        //TODO
+        // Adding cells to gallery
+        m_gallery->fill_layers(cells);
     } catch (const files_parser::parser::exception& e) {
         QErrorMessage em;
         em.showMessage(QString::fromStdString(e.what()));

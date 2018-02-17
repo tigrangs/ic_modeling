@@ -13,6 +13,7 @@ SOURCES += \
     src/parser/power_cell.cpp \
     src/gui/cells_window.cpp \
     src/gui/main_window.cpp \
+    src/gui/layers_gallery.cpp
 
 HEADERS += \
     src/core/cell.hpp \
@@ -23,6 +24,7 @@ HEADERS += \
     src/parser/power_cell.hpp \
     src/gui/cells_window.hpp \
     src/gui/main_window.hpp \
+    src/gui/layers_gallery.hpp
 
 DISTFILES +=
 

@@ -20,6 +20,8 @@ public:
                double pw,
                unsigned l);
 
+    power_cell& operator=(const power_cell&) = default;
+    power_cell(const power_cell&) = default;
 
 public:
     const std::string& name() const;
@@ -30,7 +32,7 @@ public:
     unsigned layer() const;
 
 private:
-    const std::string m_name;
+    std::string m_name;
     position m_pos;
     double m_width;
     double m_height;
