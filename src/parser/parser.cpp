@@ -6,6 +6,7 @@
 #include <QString>
 
 #include <cassert>
+#include <iostream>
 
 namespace files_parser
 {
@@ -84,13 +85,14 @@ parser::power_cells parser::get_cells(const std::string& f)
     }
 
     QByteArray data = file.readLine();
+    int rows = 0;
     while( !data.isEmpty() ) {
         //Remove spaces
         data = data.simplified();
         if(data.isEmpty()) {
-            continue;
+            break;
         }
-
+        ++rows;
         //Get the specified assignments
         QList<QByteArray> parts = data.split( ';' );
 
@@ -98,11 +100,18 @@ parser::power_cells parser::get_cells(const std::string& f)
         foreach(QByteArray ba, parts) {
             QString baStr = QString(ba);
             baStr = baStr.remove(' ');
+            if (baStr.isEmpty()) {
+                break;
+            }
+            std::cout<<baStr.toStdString()<<std::endl;
             //Get two parts of each assignment
             QStringList strList = baStr.split('=');
             //If there are more than one '=' character, it is incorrect syntax
             if(strList.count() != 2) {
-                throw exception("Syntax error too many '='");
+                foreach (auto v, strList) {
+                    std::cout<<v.toStdString()<<std::endl;
+                }
+                throw exception("Syntax error too many '=' " + QString::number(rows).toStdString() + " " + QString::number(strList.count()).toStdString() + baStr.toStdString());
             }
             //Insert pair to map
             m.insert(strList[0], strList[1]);

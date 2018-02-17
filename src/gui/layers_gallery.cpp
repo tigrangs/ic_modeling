@@ -37,7 +37,9 @@ void layers_gallery::add_layers(const files_parser::parser::power_cells& cells)
         cells_window* cw = new cells_window;
         QList<files_parser::power_cell> cls = hash.values(i);
         files_parser::parser::power_cells fppc;
-        std::copy(cls.begin(), cls.end(), fppc.begin());
+        foreach (auto d, cls) {
+            fppc.push_back(d);
+        }
         cw->fill_data(fppc);
         m_layers.push_back(cw);
     }
@@ -56,14 +58,16 @@ void layers_gallery::layout_layers()
     assert(m_layout != 0);
     int r = 0;
     int c = 0;
+
     foreach (auto l, m_layers) {
-        if (r >= 2) {
-            r = 0;
-        }
-        if (c >= 2) {
+        assert(l != 0);
+        m_layout->addWidget(l, r, c);
+        if (c + 1 < 2) {
+            ++c;
+        } else {
             c = 0;
+            ++r;
         }
-        m_layout->addWidget(l, r++, c++);
     }
 }
 
