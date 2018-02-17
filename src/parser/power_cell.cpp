@@ -6,11 +6,13 @@ namespace files_parser
 power_cell::power_cell(const std::string& n,
                        position p,
                        double w,
-                       double h)
+                       double h,
+                       double pw)
     : m_name(n)
     , m_pos(p)
     , m_width(w)
     , m_height(h)
+    , m_power(pw)
 {
 }
 
@@ -33,6 +35,11 @@ double power_cell::width() const
 double power_cell::height() const
 {
     return m_height;
+}
+
+double power_cell::power() const
+{
+    return m_power;
 }
 
 }

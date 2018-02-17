@@ -16,7 +16,8 @@ public:
     power_cell(const std::string& n,
                position p,
                double w,
-               double h);
+               double h,
+               double pw);
 
 
 public:
@@ -24,6 +25,7 @@ public:
     const position& pos() const;
     double width() const;
     double height() const;
+    double power() const;
 
 
 private:
@@ -31,6 +33,7 @@ private:
     position m_pos;
     double m_width;
     double m_height;
+    double m_power;
 
 };
 

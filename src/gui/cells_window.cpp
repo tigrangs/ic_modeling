@@ -28,7 +28,7 @@ void cells_window::fill_data(const files_parser::parser::power_cells & cells)
     for (auto i = cells.begin(); i != cells.end(); ++i) {
         QRectF r(QPoint((*i).pos().first, (*i).pos().second),
                  QSize(qreal((*i).width()), qreal((*i).height())));
-        QGraphicsRectItem* ri = m_scene->addRect(r); // TODO add QPen and QGrush
+        QGraphicsRectItem* ri = m_scene->addRect(r); // TODO add QPen and QBrush
         ri->setToolTip(QString::fromStdString((*i).name()));
     }
 }

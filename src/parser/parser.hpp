@@ -3,6 +3,8 @@
 
 #include "power_cell.hpp"
 
+#include <QMap>
+
 #include <list>
 #include <string>
 
@@ -18,13 +20,36 @@ public:
     using power_cells = std::list<power_cell>;
 
 public:
+    // Throws exceptions
     power_cells get_cells(const std::string&);
+
+public:
+    class exception
+    {
+    public:
+        exception(const std::string& e)
+            : m_error(e)
+        {}
+    public:
+        const std::string& what() const;
+
+    private:
+        const std::string m_error;
+    };
 
 private:
     parser();
 
 private:
     static parser* s_parser;
+
+public:
+    using data_map = QMap<QString, QString>;
+
+private:
+    std::string get_name(const data_map& m) const;
+    power_cell::position get_position(const data_map&) const;
+    double get_value_of(const data_map&, const std::string&) const;
 
 private:
     parser(const parser&) = delete;
