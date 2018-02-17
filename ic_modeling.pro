@@ -13,15 +13,6 @@ SOURCES += \
     src/parser/power_cell.cpp \
     src/gui/cells_window.cpp \
     src/gui/main_window.cpp \
-    src/core/cell.cpp \
-    src/core/ic.cpp \
-    src/core/layer.cpp \
-    src/gui/cells_window.cpp \
-    src/gui/main_window.cpp \
-    src/gui/thermal_window.cpp \
-    src/parser/parser.cpp \
-    src/parser/power_cell.cpp \
-    src/main.cpp
 
 HEADERS += \
     src/core/cell.hpp \
@@ -32,13 +23,8 @@ HEADERS += \
     src/parser/power_cell.hpp \
     src/gui/cells_window.hpp \
     src/gui/main_window.hpp \
-    src/core/cell.hpp \
-    src/core/ic.hpp \
-    src/core/layer.hpp \
-    src/gui/cells_window.hpp \
-    src/gui/main_window.hpp \
-    src/gui/thermal_window.hpp \
-    src/parser/parser.hpp \
-    src/parser/power_cell.hpp
 
 DISTFILES +=
+
+RESOURCES += \
+    icons/icons.qrc

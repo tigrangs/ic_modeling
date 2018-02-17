@@ -33,7 +33,7 @@ void main_window::init_toolbar()
 
 void main_window::init_actions()
 {
-    QAction* load_ic = new QAction(QIcon("open.png"), "Open...");
+    QAction* load_ic = new QAction(QIcon(":icons/open.png"), "Open...");
     m_tools->addAction(load_ic);
     bool b = connect(load_ic, SIGNAL(triggered(bool)), this, SLOT(load_ic()));
     assert(b);
@@ -42,11 +42,14 @@ void main_window::init_actions()
 void main_window::load_ic()
 {
     QString f = QFileDialog::getOpenFileName(this);
-    assert(!f.isEmpty());
+    if (f.isEmpty()) {
+        return;
+    }
     files_parser::parser* p = files_parser::parser::get_instance();
     assert(p != 0);
     try {
         files_parser::parser::power_cells cells = p->get_cells(f.toStdString());
+        //TODO
     } catch (const files_parser::parser::exception& e) {
         QErrorMessage em;
         em.showMessage(QString::fromStdString(e.what()));
