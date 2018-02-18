@@ -25,8 +25,6 @@ void ic::dump(std::string& s) const
         for (unsigned i = 0; i < m_layers.size(); ++i) {
             layer* l = m_layers[i];
             assert(l != 0);
-            s += "\n";
-            s += "******************* Layer" + std::to_string(i) + " **********************";
             l->dump(s);
         }
 }

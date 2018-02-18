@@ -14,7 +14,7 @@ namespace gui
 class cells_window : public QWidget
 {
 public:
-    cells_window(QWidget* p = nullptr);
+    cells_window(unsigned id, QWidget* p = nullptr);
 
 private:
     void init();
@@ -22,11 +22,17 @@ private:
 public:
     void fill_data(const files_parser::parser::power_cells&);
     void show_grid(bool);
-    void set_grid_size(int s);
+    void set_grid_size(int);
+    void dump_netlist(std::string&);
+
+private:
+    void dump_defined_values(std::string&);
+    void dump_cells(std::string&);
 
 private:
     QGraphicsView* m_view = 0;
     QGraphicsScene* m_scene = 0;
+    unsigned m_id = 0;
 };
 
 }

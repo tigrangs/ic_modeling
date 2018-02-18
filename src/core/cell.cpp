@@ -45,7 +45,8 @@ void cell::dump(std::string& s) const
     const std::string j = std::to_string(m_column);
     const std::string k = std::to_string(m_layer->id());
     s += "\n";
-    s += "* Cell " + i + space + j + space + k + " *";
+    s += "\n* Cell " + i + space + j + space + k + " *\n";
+    dump_I(s);
     dump_R(s);
     dump_Rsub(s);
     assert(m_layer != 0);
@@ -57,6 +58,55 @@ void cell::dump(std::string& s) const
         dump_R_right(s);
         dump_r_right(s);
     }
+}
+
+void cell::dump_I(std::string& s) const
+{
+    const std::string i = std::to_string(m_row);
+    const std::string j = std::to_string(m_column);
+    const std::string k = std::to_string(m_layer->id());
+    const std::string cv = std::to_string(m_value);
+    std::string tmp = ".param";
+    tmp += space;
+    tmp += "i" ;
+    tmp += devider;
+    tmp += i;
+    tmp += devider;
+    tmp += j;
+    tmp += devider;
+    tmp += k;
+    tmp += space;
+    tmp += "=" + cv + "\n";
+
+    tmp += "i";
+    tmp += i;
+    tmp += devider;
+    tmp += j;
+    tmp += devider;
+    tmp += k;
+    tmp += space;
+    tmp += vdd;
+    tmp += space;
+    tmp += c;
+    tmp += i;
+    tmp += devider;
+    tmp += j;
+    tmp += devider;
+    tmp += k;
+    tmp += space;
+    tmp += "dc =";
+    tmp += space;
+    tmp += "i" ;
+    tmp += devider;
+    tmp += i;
+    tmp += devider;
+    tmp += j;
+    tmp += devider;
+    tmp += k;
+    tmp += space;
+    tmp += "ac = 0\n";
+
+    s += tmp;
 }
 
 void cell::dump_R(std::string& s) const

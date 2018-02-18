@@ -51,13 +51,15 @@ unsigned layer::height() const
 
 void layer::dump(std::string& s) const
 {
-        for (unsigned i = 0; i < m_height; ++i) {
-                for (unsigned j = 0; j < m_width; ++j) {
-                        cell* c = m_cells[i][j];
-                        assert(c != 0);
-                        c->dump(s);
-                }
+    s += "\n";
+    s += "******************* Layer " + std::to_string(m_id) + " **********************";
+    for (unsigned i = 0; i < m_height; ++i) {
+        for (unsigned j = 0; j < m_width; ++j) {
+            cell* c = m_cells[i][j];
+            assert(c != 0);
+            c->dump(s);
         }
+    }
 }
 
 double layer::get_cell_value(unsigned r, unsigned c)

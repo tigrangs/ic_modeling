@@ -19,7 +19,6 @@ namespace gui
 
 main_window::main_window(QWidget *parent)
     : QMainWindow(parent)
-    , m_tools(0)
 {
     init();
 }
@@ -41,16 +40,26 @@ void main_window::init_toolbar()
 
 void main_window::init_actions()
 {
+    // Open
     QAction* load_ic = new QAction(QIcon(":icons/open.png"), "Open...");
     bool b = connect(load_ic, SIGNAL(triggered(bool)), this, SLOT(load_ic()));
     assert(b);
     m_tools->addAction(load_ic);
+
+    // Save
+    QAction* save = new QAction(QIcon(":icons/save.png"), "Save Netlist");
+    b = connect(save, SIGNAL(triggered(bool)), this, SLOT(save_netlist()));
+    assert(b);
+    m_tools->addAction(save);
+
+    // Show grid
     QAction* show_grid = new QAction(QIcon(":icons/grid.png"), "Grid");
     show_grid->setCheckable(true);
     b = connect(show_grid, SIGNAL(toggled(bool)), this, SLOT(show_grid(bool)));
     assert(b);
     m_tools->addAction(show_grid);
 
+    // Grid step
     QWidget* gsw = new QWidget;
     QHBoxLayout* l = new QHBoxLayout;
     gsw->setLayout(l);
@@ -84,6 +93,19 @@ void main_window::load_ic()
         em.showMessage(QString::fromStdString(e.what()));
         em.exec();
     }
+}
+
+void main_window::save_netlist()
+{
+    QString f = QFileDialog::getExistingDirectory(this);
+    std::string content = m_gallery->dump_netlist();
+    QFile nf(f + "/netlist.sp");
+    if (!nf.open(QFile::WriteOnly)) {
+        QErrorMessage em;
+        em.showMessage("Don't have write access");
+        em.exec();
+    }
+    nf.write(QByteArray::fromStdString(content));
 }
 
 void main_window::show_grid(bool s)

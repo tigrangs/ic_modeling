@@ -1,9 +1,12 @@
 #include "cells_window.hpp"
 
+#include <core/layer.hpp>
+
 #include <QGraphicsRectItem>
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QHBoxLayout>
+#include <QtMath>
 
 #include <QDebug>
 
@@ -34,6 +37,12 @@ public:
     {
         m_grid_step = s;
         update();
+    }
+
+public:
+    int get_grid_size() const
+    {
+        return m_grid_step;
     }
 
 protected:
@@ -69,7 +78,7 @@ protected:
         }
 
         // Draw vertical grid.
-        start =  round(rect.left(), step);
+        start = round(rect.left(), step);
         if (start > rect.left()) {
             start -= step;
         }
@@ -85,8 +94,10 @@ private:
     int m_grid_step = 1;
 };
 
-cells_window::cells_window(QWidget *p)
+
+cells_window::cells_window(unsigned id, QWidget *p)
     : QWidget(p)
+    , m_id(id)
 {
     init();
 }
@@ -145,6 +156,110 @@ void cells_window::set_grid_size(int s)
 {
     assert(m_scene != 0);
     static_cast<scene*>(m_scene)->set_grid_size(s);
+}
+
+void cells_window::dump_netlist(std::string& netlist)
+{
+    dump_defined_values(netlist);
+    dump_cells(netlist);
+}
+
+void cells_window::dump_defined_values(std::string& netlist)
+{
+    scene* sc = static_cast<scene*>(m_scene);
+    assert(sc != 0);
+    int step = sc->get_grid_size();
+
+    ///////////////////////////     Rij       //////////////////////////////////////////
+    const qreal lambda = 0.000233;
+    qreal subThickness = 2.88;
+    qreal h = 23.8;
+
+    qreal S = qPow(step, 2);
+    qreal Rij = 1 / (lambda * h);
+    netlist += QString(".param Rij = %1\n").arg(Rij).toStdString();
+
+    ///////////////////////////     rij       //////////////////////////////////////////
+    S = step * subThickness;
+    qreal rij = 1 / (lambda * subThickness);
+    netlist += QString(".param rij = %1\n").arg(rij).toStdString();
+
+    ///////////////////////////     Ri       //////////////////////////////////////////
+    S = qPow(step, 2);
+    qreal Ri = h / (lambda * S);
+
+    netlist += QString(".param Ri = %1\n").arg(Ri).toStdString();
+
+    ///////////////////////////     Rsub       //////////////////////////////////////////
+    S = qPow(step, 2);
+    qreal Rsub =  subThickness/ (lambda * S);
+
+    netlist += QString(".param Rsub = %1\n").arg(Rsub).toStdString();
+}
+
+void cells_window::dump_cells(std::string& netlist)
+{
+    assert(m_scene != 0);
+    QRectF bRect = m_scene->itemsBoundingRect();
+    QPointF distPoint = QPoint(20,20);
+    QRectF cbRect(bRect.topLeft()-distPoint, bRect.bottomRight()+distPoint);
+
+    scene* sc = static_cast<scene*>(m_scene);
+    assert(sc != 0);
+
+    int itStep = sc->get_grid_size();
+    qreal xStart = cbRect.topLeft().x();
+    qreal xEnd = cbRect.topRight().x()-itStep;
+    qreal yStart = cbRect.topLeft().y();
+    qreal yEnd = cbRect.bottomLeft().y()-itStep;
+
+
+    unsigned w = static_cast<unsigned>((xEnd - xStart) / itStep) + 1;
+    unsigned h = static_cast<unsigned>((yEnd - yStart) / itStep) + 1;
+
+    core::layer layer(m_id, w, h);
+
+    qreal theIPower =0.2;
+
+    int row = 0;
+    for(qreal x = xStart; x <= xEnd; x += itStep) {
+        int column = 0;
+        for(qreal y = yStart; y <= yEnd; y += itStep) {
+            QRectF gridRect(x, y, itStep, itStep);
+            QGraphicsRectItem* gridItem = new  QGraphicsRectItem(gridRect);
+
+            m_scene->addItem(gridItem);
+            qreal intersectP = 0;
+
+            QList<QGraphicsItem *>  collidingItemsList = gridItem->collidingItems();
+            foreach(QGraphicsItem* item, collidingItemsList) {
+                QGraphicsRectItem* ri = dynamic_cast<QGraphicsRectItem*>(item);
+                if (ri) {
+                    QRectF bRect = ri->boundingRect();
+                    QRectF intersectRect = gridItem->rect().intersected(bRect);
+                    QVariant v = ri->data(POWER);
+                    assert(v.isValid());
+                    double pv = v.toDouble();
+                    ///intersectP += intersectRect.height() * intersectRect.width() * node->getPower() / S;
+                    intersectP += intersectRect.height() * intersectRect.width() * pv /(gridItem->rect().height()* gridItem->rect().width());
+                    //333 intersectP += intersectRect.height() * intersectRect.width() * node->getPower();
+
+                }
+            }
+            m_scene->removeItem(gridItem);
+
+            if (!intersectP) {
+                intersectP = theIPower/2;
+            } else {
+               theIPower = intersectP;
+            }
+            layer.set_cell_value(column, row, intersectP);
+            ++column;
+        }
+        ++row;
+    }
+
+    layer.dump(netlist);
 }
 
 }

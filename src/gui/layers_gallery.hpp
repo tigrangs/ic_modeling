@@ -23,6 +23,7 @@ public:
     void fill_layers(const files_parser::parser::power_cells&);
     void show_grid(bool s);
     void set_grid_size(int s);
+    std::string dump_netlist();
 
 private:
     void add_layers(const files_parser::parser::power_cells&);

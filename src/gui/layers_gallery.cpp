@@ -36,7 +36,7 @@ void layers_gallery::add_layers(const files_parser::parser::power_cells& cells)
     QList<unsigned> layers_ids = hash.uniqueKeys();
     qSort(layers_ids);
     foreach (unsigned i, layers_ids) {
-        cells_window* cw = new cells_window;
+        cells_window* cw = new cells_window(i);
         QList<files_parser::power_cell> cls = hash.values(i);
         files_parser::parser::power_cells fppc;
         foreach (auto d, cls) {
@@ -87,6 +87,17 @@ void layers_gallery::set_grid_size(int s)
         assert(l != 0);
         l->set_grid_size(s);
     }
+}
+
+std::string layers_gallery::dump_netlist()
+{
+    // TODO
+    std::string content;
+    foreach (auto l, m_layers) {
+        assert(l != 0);
+        l->dump_netlist(content);
+    }
+    return content;
 }
 
 }

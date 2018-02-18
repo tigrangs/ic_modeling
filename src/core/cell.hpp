@@ -26,6 +26,7 @@ public:
     void dump(std::string&) const;
 
 private:
+    void dump_I(std::string&) const;
     void dump_R(std::string&) const;
     void dump_Rsub(std::string&) const;
     void dump_R_right(std::string&) const;
