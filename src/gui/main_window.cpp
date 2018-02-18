@@ -6,7 +6,11 @@
 #include <QAction>
 #include <QErrorMessage>
 #include <QFileDialog>
+#include <QLabel>
+#include <QLayout>
+#include <QSpinBox>
 #include <QToolBar>
+#include <QWidgetAction>
 
 #include <cassert>
 
@@ -38,9 +42,27 @@ void main_window::init_toolbar()
 void main_window::init_actions()
 {
     QAction* load_ic = new QAction(QIcon(":icons/open.png"), "Open...");
-    m_tools->addAction(load_ic);
     bool b = connect(load_ic, SIGNAL(triggered(bool)), this, SLOT(load_ic()));
     assert(b);
+    m_tools->addAction(load_ic);
+    QAction* show_grid = new QAction(QIcon(":icons/grid.png"), "Grid");
+    show_grid->setCheckable(true);
+    b = connect(show_grid, SIGNAL(toggled(bool)), this, SLOT(show_grid(bool)));
+    assert(b);
+    m_tools->addAction(show_grid);
+
+    QWidget* gsw = new QWidget;
+    QHBoxLayout* l = new QHBoxLayout;
+    gsw->setLayout(l);
+    l->addWidget(new QLabel("Grid Step:"));
+    QSpinBox* sb = new QSpinBox();
+    sb->setMinimum(1);
+    sb->setMaximum(1000);
+    l->addWidget(sb);
+    b = connect(sb, SIGNAL(valueChanged(int)), this, SLOT(grid_size_changed(int)));
+    QWidgetAction* gs = new QWidgetAction(m_tools);
+    gs->setDefaultWidget(gsw);
+    m_tools->addAction(gs);
 }
 
 void main_window::load_ic()
@@ -51,15 +73,29 @@ void main_window::load_ic()
     }
     files_parser::parser* p = files_parser::parser::get_instance();
     assert(p != 0);
+    assert(m_gallery != 0);
     try {
         files_parser::parser::power_cells cells = p->get_cells(f.toStdString());
         // Adding cells to gallery
         m_gallery->fill_layers(cells);
+//        layout()->setSizeConstraint(QLayout::SetFixedSize);
     } catch (const files_parser::parser::exception& e) {
         QErrorMessage em;
         em.showMessage(QString::fromStdString(e.what()));
         em.exec();
     }
+}
+
+void main_window::show_grid(bool s)
+{
+    assert(m_gallery != 0);
+    m_gallery->show_grid(s);
+}
+
+void main_window::grid_size_changed(int s)
+{
+    assert(m_gallery != 0);
+    m_gallery->set_grid_size(s);
 }
 
 }

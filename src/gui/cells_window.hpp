@@ -21,6 +21,8 @@ private:
 
 public:
     void fill_data(const files_parser::parser::power_cells&);
+    void show_grid(bool);
+    void set_grid_size(int s);
 
 private:
     QGraphicsView* m_view = 0;

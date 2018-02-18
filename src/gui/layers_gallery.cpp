@@ -16,6 +16,8 @@ layers_gallery::layers_gallery(QWidget *parent)
 {
     m_layout = new QGridLayout;
     setLayout(m_layout);
+//    m_layout->setSizeConstraint(QLayout::SetFixedSize);
+//    setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 }
 
 void layers_gallery::fill_layers(const files_parser::parser::power_cells& cells)
@@ -68,6 +70,22 @@ void layers_gallery::layout_layers()
             c = 0;
             ++r;
         }
+    }
+}
+
+void layers_gallery::show_grid(bool s)
+{
+    foreach (auto l, m_layers) {
+        assert(l != 0);
+        l->show_grid(s);
+    }
+}
+
+void layers_gallery::set_grid_size(int s)
+{
+    foreach (auto l, m_layers) {
+        assert(l != 0);
+        l->set_grid_size(s);
     }
 }
 

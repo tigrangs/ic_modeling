@@ -18,6 +18,8 @@ signals:
 
 private slots:
     void load_ic();
+    void show_grid(bool);
+    void grid_size_changed(int);
 
 private:
     void init();
