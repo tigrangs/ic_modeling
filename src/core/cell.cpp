@@ -9,7 +9,7 @@ namespace core
 namespace {
 
 static const std::string rR = "rR_";
-static const std::string rr = "rr_";
+static const std::string rr = "rr_s_";
 static const std::string devider = "_";
 static const std::string c = "_c_";
 static const std::string R = "R=";

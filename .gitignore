@@ -14,6 +14,7 @@ objs/
 objs-d/
 objs_rc/
 objs_rc-d/
+input/
 win_obj
 # ignore all tmp backup files
 *~

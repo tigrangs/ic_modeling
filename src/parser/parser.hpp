@@ -8,6 +8,13 @@
 #include <list>
 #include <string>
 
+namespace core
+{
+
+class ic;
+
+}
+
 namespace files_parser
 {
 
@@ -22,6 +29,9 @@ public:
 public:
     // Throws exceptions
     power_cells get_cells(const std::string&);
+
+public:
+    core::ic* get_ic(const std::string&);
 
 public:
     class exception

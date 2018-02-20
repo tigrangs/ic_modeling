@@ -87,9 +87,9 @@ void thermal_window::fill_data(core::layer* l)
     m_surface->axisX()->setLabelFormat("%.2f");
     m_surface->axisZ()->setLabelFormat("%.2f");
 
-    m_surface->axisX()->setRange(0, l->width() - 1);
+    m_surface->axisX()->setRange(0, l->height() - 1);
     m_surface->axisY()->setRange(0, max_value);
-    m_surface->axisZ()->setRange(0, l->height() - 1);
+    m_surface->axisZ()->setRange(0, l->width() - 1);
 
     m_surface->axisX()->setLabelAutoRotation(30);
     m_surface->axisY()->setLabelAutoRotation(90);

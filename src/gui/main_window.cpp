@@ -1,6 +1,8 @@
 #include "main_window.hpp"
 #include "layers_gallery.hpp"
+#include "thermal_window.hpp"
 
+#include <core/ic.hpp>
 #include <parser/parser.hpp>
 
 #include <QAction>
@@ -51,6 +53,12 @@ void main_window::init_actions()
     b = connect(save, SIGNAL(triggered(bool)), this, SLOT(save_netlist()));
     assert(b);
     m_tools->addAction(save);
+
+    // Load netlist
+    QAction* load_netlist = new QAction("Load");
+    b = connect(load_netlist, SIGNAL(triggered(bool)), this, SLOT(load_netlist()));
+    assert(b);
+    m_tools->addAction(load_netlist);
 
     // Show grid
     QAction* show_grid = new QAction(QIcon(":icons/grid.png"), "Grid");
@@ -118,6 +126,23 @@ void main_window::grid_size_changed(int s)
 {
     assert(m_gallery != 0);
     m_gallery->set_grid_size(s);
+}
+
+void main_window::load_netlist()
+{
+    QString f = QFileDialog::getOpenFileName(this, "Open Dialog", "", "*.ic0");
+    if (f.isEmpty()) {
+        return;
+    }
+    files_parser::parser* p = files_parser::parser::get_instance();
+    assert(p != 0);
+    core::ic* ic = p->get_ic(f.toStdString());
+    if (ic == 0) {
+        return;
+    }
+    thermal_window* tw = new thermal_window;
+    tw->fill_data(ic->get_layer(0));
+    tw->show();
 }
 
 }
