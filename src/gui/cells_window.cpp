@@ -160,7 +160,9 @@ void cells_window::set_grid_size(int s)
 
 void cells_window::dump_netlist(std::string& netlist)
 {
-    dump_defined_values(netlist);
+    if (m_id == 0) {
+        dump_defined_values(netlist);
+    }
     dump_cells(netlist);
 }
 
