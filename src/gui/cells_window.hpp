@@ -23,6 +23,8 @@ public:
     void fill_data(const files_parser::parser::power_cells&);
     void show_grid(bool);
     void set_grid_size(int);
+    int get_grid_size() const;
+    const QGraphicsScene* get_scene() const;
     void dump_netlist(std::string&);
 
 private:
@@ -33,6 +35,7 @@ private:
     QGraphicsView* m_view = 0;
     QGraphicsScene* m_scene = 0;
     unsigned m_id = 0;
+    int m_size = 1;
 };
 
 }

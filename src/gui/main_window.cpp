@@ -3,6 +3,7 @@
 #include "thermal_window.hpp"
 
 #include <core/ic.hpp>
+#include <core/layer.hpp>
 #include <parser/parser.hpp>
 
 #include <QAction>
@@ -140,7 +141,20 @@ void main_window::load_netlist()
     if (ic == 0) {
         return;
     }
+    assert(m_gallery != 0);
+    QRectF bRect = m_gallery->get_rect();
+    int itStep = m_gallery->get_grid_size();
+    QPointF distPoint = QPoint(20,20);
+    QRectF cbRect(bRect.topLeft()-distPoint, bRect.bottomRight()+distPoint);
+    qreal factor =( cbRect.height()*cbRect.width())/(itStep*itStep);
     thermal_window* tw = new thermal_window;
+    core::layer* l = ic->get_layer(0);
+    assert(l != 0);
+    for (unsigned i = 0; i < l->height(); ++i) {
+        for (unsigned j = 0; j < l->width(); ++j) {
+            l->set_cell_value(i, j, l->get_cell_value(i, j)*100/factor);
+        }
+    }
     tw->fill_data(ic->get_layer(0));
     tw->show();
 }

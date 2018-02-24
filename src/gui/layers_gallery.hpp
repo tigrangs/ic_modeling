@@ -23,6 +23,8 @@ public:
     void fill_layers(const files_parser::parser::power_cells&);
     void show_grid(bool s);
     void set_grid_size(int s);
+    int get_grid_size() const;
+    QRectF get_rect() const;
     std::string dump_netlist();
 
 private:

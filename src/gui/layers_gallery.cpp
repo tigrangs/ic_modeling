@@ -2,6 +2,7 @@
 
 #include "cells_window.hpp"
 
+#include <QGraphicsScene>
 #include <QGridLayout>
 #include <QMultiHash>
 #include <QtAlgorithms>
@@ -97,7 +98,7 @@ std::string layers_gallery::dump_netlist()
     content += "*******************Created by ic_modeling tool ************************\n";
     content += "***********************************************************************\n\n\n";
     content += ".prot\n";
-    content += ".lib '/remote/am04home2/ilena/usumnakan/hspice/saed32nm.lib' TT\n";
+    content += ".lib '/remote/u/tigrangs/hspice/saed32nm.lib' TT\n";
     content += ".unprot\n\n";
     content += ".temp 25\n";
     content += "vvdd vdd gnd dc = 1.2\n";
@@ -107,12 +108,22 @@ std::string layers_gallery::dump_netlist()
         assert(l != 0);
         l->dump_netlist(content);
     }
-    content += "\n.option post probe\n\n";
+    content += "\n\n.option post probe\n\n";
     content += ".global gnd\n";
     content += ".probe v(*) i(*)\n";
     content += ".tran 10p 5n\n\n";
     content += ".end";
     return content;
+}
+
+QRectF layers_gallery::get_rect() const
+{
+    return m_layers[0]->get_scene()->itemsBoundingRect();
+}
+
+int layers_gallery::get_grid_size() const
+{
+    return m_layers[0]->get_grid_size();
 }
 
 }

@@ -119,8 +119,8 @@ void cells_window::init()
 void cells_window::fill_data(const files_parser::parser::power_cells & cells)
 {
     foreach (auto i, cells) {
-        QRectF r(QPoint(i.pos().first * 100, i.pos().second * 100),
-                 QSize(qreal(i.width() * 100), qreal(i.height() * 100)));
+        QRectF r(QPoint(i.pos().first * 15, i.pos().second * 15),
+                 QSize(qreal(i.width() * 15), qreal(i.height() * 15)));
         QPen pen;
         pen.setStyle(Qt::SolidLine);
         pen.setWidth(2);
@@ -155,7 +155,18 @@ void cells_window::show_grid(bool s)
 void cells_window::set_grid_size(int s)
 {
     assert(m_scene != 0);
+    m_size = s;
     static_cast<scene*>(m_scene)->set_grid_size(s);
+}
+
+int cells_window::get_grid_size() const
+{
+    return m_size;
+}
+
+const QGraphicsScene* cells_window::get_scene() const
+{
+    return m_scene;
 }
 
 void cells_window::dump_netlist(std::string& netlist)

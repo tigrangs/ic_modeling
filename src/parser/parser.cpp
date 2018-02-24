@@ -146,7 +146,7 @@ struct indexs
     indexs(unsigned r,
            unsigned c,
            unsigned l)
-        : row(c)
+        : row(r)
         , column(c)
         , level(l)
     {}
@@ -335,8 +335,8 @@ core::ic* parser::get_ic(const std::string& fn)
         }
         core::layer* la = ic->get_layer(l);
         assert(la != 0);
-        std::cout<<r<<std::endl;
-        std::cout<<c<<std::endl;
+        //std::cout<<r<<std::endl;
+        //std::cout<<c<<std::endl;
         la->set_cell_value(r, c, temp);
 //        temp_map[indexs(r, c, l)] = temp;
 //        tempMap.insert(Iidx, temp); TODO
