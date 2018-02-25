@@ -56,7 +56,7 @@ void main_window::init_actions()
     m_tools->addAction(save);
 
     // Load netlist
-    QAction* load_netlist = new QAction("Load");
+    QAction* load_netlist = new QAction(QIcon(":icons/load.png"), "Load");
     b = connect(load_netlist, SIGNAL(triggered(bool)), this, SLOT(load_netlist()));
     assert(b);
     m_tools->addAction(load_netlist);

@@ -3,5 +3,6 @@
         <file>open.png</file>
         <file>grid.png</file>
         <file>save.png</file>
+        <file>load.png</file>
     </qresource>
 </RCC>
