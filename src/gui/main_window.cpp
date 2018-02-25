@@ -1,6 +1,6 @@
 #include "main_window.hpp"
 #include "layers_gallery.hpp"
-#include "thermal_window.hpp"
+#include "thermal_gallery.hpp"
 
 #include <core/ic.hpp>
 #include <core/layer.hpp>
@@ -144,7 +144,7 @@ void main_window::load_netlist()
     assert(m_gallery != 0);
     QRectF bRect = m_gallery->get_rect();
     int itStep = m_gallery->get_grid_size();
-    QPointF distPoint = QPoint(20,20);
+/*    QPointF distPoint = QPoint(20,20);
     QRectF cbRect(bRect.topLeft()-distPoint, bRect.bottomRight()+distPoint);
     qreal factor =( cbRect.height()*cbRect.width())/(itStep*itStep);
     thermal_window* tw = new thermal_window;
@@ -156,7 +156,9 @@ void main_window::load_netlist()
         }
     }
     tw->fill_data(ic->get_layer(0));
-    tw->show();
+    tw->show();*/
+    thermal_gallery* tg = new thermal_gallery(ic, bRect, itStep);
+    tg->show();
 }
 
 }
