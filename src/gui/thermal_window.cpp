@@ -3,8 +3,11 @@
 #include <core/layer.hpp>
 
 #include <QHBoxLayout>
+#include <QLabel>
 #include <QMessageBox>
 #include <QScreen>
+
+#include <cassert>
 
 #include <iostream>
 
@@ -31,9 +34,9 @@ void thermal_window::init()
         return;
     }
 
-    QSize screenSize = m_surface->screen()->size();
-    container->setMinimumSize(QSize(screenSize.width() / 2, screenSize.height() / 1.6));
-    container->setMaximumSize(screenSize);
+    //QSize screenSize = m_surface->screen()->size();
+    //container->setMinimumSize(QSize(screenSize.width() / 2, screenSize.height() / 1.6));
+    //container->setMaximumSize(screenSize);
     container->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     container->setFocusPolicy(Qt::StrongFocus);
 
@@ -42,22 +45,18 @@ void thermal_window::init()
     m_surface->setAxisZ(new QValue3DAxis);
 
     m_series = new QSurface3DSeries();
-    QHBoxLayout* l = new QHBoxLayout();
+    QVBoxLayout* l = new QVBoxLayout();
+    m_label = new QLabel();
     l->setMargin(0);
+    l->addWidget(m_label);
     l->addWidget(container);
     setLayout(l);
-
-    core::layer*  m_layer = new core::layer(0, 200, 200);
-    for (unsigned i = 0; i< m_layer->height(); ++i) {
-        for (unsigned j = 0; j < m_layer->width(); ++j) {
-            m_layer->set_cell_value(i, j, i+j);
-        }
-    }
-    fill_data(m_layer);
 }
 
 void thermal_window::fill_data(core::layer* l)
 {
+    assert(m_label != 0);
+    m_label->setText(QString::fromStdString("Layer " + std::to_string(l->id())));
     QSurfaceDataArray *dataArray = new QSurfaceDataArray;
     std::cout<<l->height()<<std::endl;
     dataArray->reserve(2*l->height()); //QT_BUG
@@ -103,7 +102,8 @@ void thermal_window::fill_data(core::layer* l)
     m_surface->activeTheme()->setType(Q3DTheme::Theme(2));
 
     QLinearGradient gr;
-    gr.setColorAt(0.0, Qt::darkGreen);
+    gr.setColorAt(0.0, Qt::darkCyan);
+    gr.setColorAt(0.3, Qt::darkGreen);
     gr.setColorAt(0.5, Qt::yellow);
     gr.setColorAt(0.8, Qt::red);
     gr.setColorAt(1.0, Qt::darkRed);

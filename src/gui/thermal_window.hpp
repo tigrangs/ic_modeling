@@ -9,6 +9,8 @@
 
 using namespace QtDataVisualization;
 
+class QLabel;
+
 namespace core
 {
 
@@ -35,6 +37,7 @@ private:
     Q3DSurface* m_surface = 0;
     QSurface3DSeries* m_series = 0;
     core::layer* m_layer = 0;
+    QLabel* m_label = 0;
 
 signals:
 
