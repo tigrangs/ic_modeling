@@ -15,6 +15,7 @@ public:
         using layers = std::vector<layer*>;
 
 public:
+        ic(const std::vector<layer*>&);
         ic(unsigned l, unsigned w, unsigned h);
         ~ic();
 

@@ -1,5 +1,5 @@
 #include "thermal_gallery.hpp"
-#include "thermal_window.hpp"
+#include "viewer_3d.hpp"
 
 #include <core/ic.hpp>
 #include <core/layer.hpp>
@@ -15,12 +15,18 @@ thermal_gallery::thermal_gallery(core::ic* ic, QRectF bRect, int itStep,  QWidge
     assert(ic != 0);
     QGridLayout* layout = new QGridLayout;
     setLayout(layout);
+    QLinearGradient gr;
+    gr.setColorAt(0.0, Qt::darkCyan);
+    gr.setColorAt(0.3, Qt::darkGreen);
+    gr.setColorAt(0.5, Qt::yellow);
+    gr.setColorAt(0.8, Qt::red);
+    gr.setColorAt(1.0, Qt::darkRed);
 
     QPointF distPoint = QPoint(20,20);
     QRectF cbRect(bRect.topLeft()-distPoint, bRect.bottomRight()+distPoint);
     qreal factor =( cbRect.height()*cbRect.width())/(itStep*itStep);
     for (int i = 0; i < ic->layers_count(); ++i) {
-        thermal_window* tw = new thermal_window(this);
+        viewer_3d* tw = new viewer_3d(this);
         core::layer* l = ic->get_layer(i);
         assert(l != 0);
         for (unsigned i = 0; i < l->height(); ++i) {
@@ -29,6 +35,7 @@ thermal_gallery::thermal_gallery(core::ic* ic, QRectF bRect, int itStep,  QWidge
             }
         }
         tw->fill_data(l);
+        tw->set_gradient(gr);
         m_layers.push_back(tw);
     }
 

@@ -6,6 +6,17 @@
 namespace core
 {
 
+ic::ic(const std::vector<layer *> & v)
+{
+        unsigned W = v[0]->width();
+        unsigned H = v[0]->height();
+        for (unsigned i = 1; i < v.size(); ++i) {
+                assert(v[i]->width() == W);
+                assert(v[i]->height() == H);
+        }
+        m_layers = v;
+}
+
 ic::ic(unsigned l, unsigned w, unsigned h)
 {
         for (unsigned i = 0; i < l; ++i) {

@@ -8,6 +8,12 @@
 class QGraphicsView;
 class QGraphicsScene;
 
+namespace core {
+
+class layer;
+
+}
+
 namespace gui
 {
 
@@ -26,6 +32,7 @@ public:
     int get_grid_size() const;
     const QGraphicsScene* get_scene() const;
     void dump_netlist(std::string&);
+    core::layer* get_layer(int);
 
 private:
     void dump_defined_values(std::string&);

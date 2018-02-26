@@ -210,17 +210,13 @@ void cells_window::dump_defined_values(std::string& netlist)
     netlist += QString(".param Rsub = %1\n").arg(Rsub).toStdString();
 }
 
-void cells_window::dump_cells(std::string& netlist)
+core::layer* cells_window::get_layer(int itStep)
 {
     assert(m_scene != 0);
     QRectF bRect = m_scene->itemsBoundingRect();
     QPointF distPoint = QPoint(20,20);
     QRectF cbRect(bRect.topLeft()-distPoint, bRect.bottomRight()+distPoint);
 
-    scene* sc = static_cast<scene*>(m_scene);
-    assert(sc != 0);
-
-    int itStep = sc->get_grid_size();
     qreal xStart = cbRect.topLeft().x();
     qreal xEnd = cbRect.topRight().x()-itStep;
     qreal yStart = cbRect.topLeft().y();
@@ -230,7 +226,7 @@ void cells_window::dump_cells(std::string& netlist)
     unsigned w = static_cast<unsigned>((xEnd - xStart) / itStep) + 1;
     unsigned h = static_cast<unsigned>((yEnd - yStart) / itStep) + 1;
 
-    core::layer layer(m_id, w, h);
+    core::layer* layer = new core::layer(m_id, w, h);
 
     qreal theIPower =0.2;
 
@@ -266,13 +262,23 @@ void cells_window::dump_cells(std::string& netlist)
             } else {
                theIPower = intersectP;
             }
-            layer.set_cell_value(column, row, intersectP);
+            layer->set_cell_value(column, row, intersectP);
             ++column;
         }
         ++row;
     }
+    return layer;
+}
 
-    layer.dump(netlist);
+void cells_window::dump_cells(std::string& netlist)
+{
+    scene* sc = static_cast<scene*>(m_scene);
+    assert(sc != 0);
+
+    core::layer* layer = get_layer(sc->get_grid_size());
+    assert(layer != 0);
+    layer->dump(netlist);
+    delete layer;
 }
 
 }

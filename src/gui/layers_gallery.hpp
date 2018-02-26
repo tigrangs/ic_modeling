@@ -8,6 +8,13 @@
 
 class QGridLayout;
 
+namespace core
+{
+
+class ic;
+
+}
+
 namespace gui
 {
 
@@ -26,6 +33,7 @@ public:
     int get_grid_size() const;
     QRectF get_rect() const;
     std::string dump_netlist();
+    core::ic* get_ic();
 
 private:
     void add_layers(const files_parser::parser::power_cells&);

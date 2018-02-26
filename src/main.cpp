@@ -1,6 +1,6 @@
 #include <core/ic.hpp>
 #include <core/layer.hpp>
-#include <gui/thermal_window.hpp>
+#include <gui/viewer_3d.hpp>
 #include <gui/cells_window.hpp>
 #include <gui/main_window.hpp>
 

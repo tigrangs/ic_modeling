@@ -22,6 +22,7 @@ private slots:
     void grid_size_changed(int);
     void save_netlist();
     void load_netlist();
+    void show_power_gallery();
 
 private:
     void init();

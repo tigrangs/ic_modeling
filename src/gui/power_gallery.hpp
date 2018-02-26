@@ -1,5 +1,5 @@
-#ifndef THERMAL_GALLERY_HPP
-#define THERMAL_GALLERY_HPP
+#ifndef POWER_GALLERY_HPP
+#define POWER_GALLERY_HPP
 
 #include <QWidget>
 
@@ -13,11 +13,11 @@ namespace gui
 
 class viewer_3d;
 
-class thermal_gallery : public QWidget
+class power_gallery : public QWidget
 {
     Q_OBJECT
 public:
-    explicit thermal_gallery(core::ic*, QRectF, int, QWidget *parent = nullptr);
+    explicit power_gallery(core::ic*, QWidget *parent = nullptr);
 
 private:
     using layers = QList<viewer_3d*>;
@@ -28,4 +28,4 @@ private:
 
 }
 
-#endif // THERMAL_GALLERY_HPP
+#endif // POWER_GALLERY_HPP

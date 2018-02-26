@@ -1,4 +1,4 @@
-#include "thermal_window.hpp"
+#include "viewer_3d.hpp"
 
 #include <core/layer.hpp>
 
@@ -17,12 +17,12 @@
 namespace gui
 {
 
-thermal_window::thermal_window(QWidget *parent) : QWidget(parent)
+viewer_3d::viewer_3d(QWidget *parent) : QWidget(parent)
 {
     init();
 }
 
-void thermal_window::init()
+void viewer_3d::init()
 {
     m_surface = new Q3DSurface();
     QWidget *container = QWidget::createWindowContainer(m_surface);
@@ -53,7 +53,7 @@ void thermal_window::init()
     setLayout(l);
 }
 
-void thermal_window::fill_data(core::layer* l)
+void viewer_3d::fill_data(core::layer* l)
 {
     assert(m_label != 0);
     m_label->setText(QString::fromStdString("Layer " + std::to_string(l->id())));
@@ -80,7 +80,9 @@ void thermal_window::fill_data(core::layer* l)
 
     m_series->dataProxy()->resetArray(dataArray);
 
-    m_series->setDrawMode(QSurface3DSeries::DrawSurfaceAndWireframe);
+
+    m_series->setDrawMode(m_draw_mode);
+    //m_series->setDrawMode(QSurface3DSeries::DrawSurfaceAndWireframe);
 //    m_series->setFlatShadingEnabled(true);
 
     m_surface->axisX()->setLabelFormat("%.2f");
@@ -100,13 +102,18 @@ void thermal_window::fill_data(core::layer* l)
 
     m_surface->setSelectionMode(QAbstract3DGraph::SelectionItem);
     m_surface->activeTheme()->setType(Q3DTheme::Theme(2));
+}
 
-    QLinearGradient gr;
-    gr.setColorAt(0.0, Qt::darkCyan);
-    gr.setColorAt(0.3, Qt::darkGreen);
-    gr.setColorAt(0.5, Qt::yellow);
-    gr.setColorAt(0.8, Qt::red);
-    gr.setColorAt(1.0, Qt::darkRed);
+void viewer_3d::set_draw_mode(QSurface3DSeries::DrawFlag df)
+{
+    assert(m_series != 0);
+    m_series->setDrawMode(df);
+    m_draw_mode = df;
+}
+
+
+void viewer_3d::set_gradient(QLinearGradient gr)
+{
     m_surface->seriesList().at(0)->setBaseGradient(gr);
     m_surface->seriesList().at(0)->setColorStyle(Q3DTheme::ColorStyleRangeGradient);
 

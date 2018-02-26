@@ -21,27 +21,26 @@ class layer;
 namespace gui
 {
 
-class thermal_window : public QWidget
+class viewer_3d : public QWidget
 {
     Q_OBJECT
 public:
-    explicit thermal_window(QWidget *parent = nullptr);
+    explicit viewer_3d(QWidget *parent = nullptr);
 
 private:
     void init();
 
 public:
+    void set_draw_mode(QSurface3DSeries::DrawFlag);
     void fill_data(core::layer *l);
+    void set_gradient(QLinearGradient gr);
 
 private:
     Q3DSurface* m_surface = 0;
     QSurface3DSeries* m_series = 0;
     core::layer* m_layer = 0;
     QLabel* m_label = 0;
-
-signals:
-
-public slots:
+    QSurface3DSeries::DrawFlag m_draw_mode = QSurface3DSeries::DrawSurfaceAndWireframe;
 };
 
 }

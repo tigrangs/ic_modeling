@@ -1,0 +1,46 @@
+#include "power_gallery.hpp"
+#include "viewer_3d.hpp"
+
+#include <core/ic.hpp>
+#include <core/layer.hpp>
+
+#include <QGridLayout>
+
+#include <cassert>
+
+namespace gui
+{
+
+power_gallery::power_gallery(core::ic* ic, QWidget *parent) : QWidget(parent)
+{
+    assert(ic != 0);
+    QGridLayout* layout = new QGridLayout;
+    setLayout(layout);
+
+    for (int i = 0; i < ic->layers_count(); ++i) {
+        viewer_3d* pw = new viewer_3d(this);
+        core::layer* l = ic->get_layer(i);
+        assert(l != 0);
+        pw->set_draw_mode(QSurface3DSeries::DrawWireframe);
+        pw->fill_data(l);
+        m_layers.push_back(pw);
+    }
+
+
+    int r = 0;
+    int c = 0;
+
+    foreach (auto l, m_layers) {
+        assert(l != 0);
+        layout->addWidget(l, r, c);
+        if (c + 1 < 2) {
+            ++c;
+        } else {
+            c = 0;
+            ++r;
+        }
+    }
+
+}
+
+}

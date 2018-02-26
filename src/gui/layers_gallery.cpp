@@ -2,6 +2,8 @@
 
 #include "cells_window.hpp"
 
+#include <core/ic.hpp>
+
 #include <QGraphicsScene>
 #include <QGridLayout>
 #include <QMultiHash>
@@ -124,6 +126,16 @@ QRectF layers_gallery::get_rect() const
 int layers_gallery::get_grid_size() const
 {
     return m_layers[0]->get_grid_size();
+}
+
+core::ic* layers_gallery::get_ic()
+{
+    std::vector<core::layer*> layers;
+    foreach (auto l, m_layers) {
+        assert(l != 0);
+        layers.push_back(l->get_layer(5));
+    }
+    return new core::ic(layers);
 }
 
 }
