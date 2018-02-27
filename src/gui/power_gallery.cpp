@@ -17,12 +17,18 @@ power_gallery::power_gallery(core::ic* ic, QWidget *parent) : QWidget(parent)
     QGridLayout* layout = new QGridLayout;
     setLayout(layout);
 
+    QLinearGradient gr;
+    gr.setColorAt(0.0, Qt::darkBlue);
+    gr.setColorAt(0.33, Qt::blue);
+    gr.setColorAt(0.67, Qt::red);
+    gr.setColorAt(1.0, Qt::yellow);
     for (int i = 0; i < ic->layers_count(); ++i) {
         viewer_3d* pw = new viewer_3d(this);
         core::layer* l = ic->get_layer(i);
         assert(l != 0);
-        pw->set_draw_mode(QSurface3DSeries::DrawWireframe);
+        pw->set_draw_mode(QSurface3DSeries::DrawSurface);
         pw->fill_data(l);
+        pw->set_gradient(gr);
         m_layers.push_back(pw);
     }
 

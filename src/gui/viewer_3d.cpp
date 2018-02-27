@@ -34,9 +34,10 @@ void viewer_3d::init()
         return;
     }
 
-    //QSize screenSize = m_surface->screen()->size();
+    QSize screenSize = m_surface->screen()->size();
     //container->setMinimumSize(QSize(screenSize.width() / 2, screenSize.height() / 1.6));
-    //container->setMaximumSize(screenSize);
+    container->setMinimumSize(QSize(400, 400));
+    container->setMaximumSize(screenSize);
     container->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     container->setFocusPolicy(Qt::StrongFocus);
 
@@ -99,9 +100,10 @@ void viewer_3d::fill_data(core::layer* l)
 
 
     m_surface->addSeries(m_series);
+    m_series->setColorStyle(Q3DTheme::ColorStyleObjectGradient);
 
     m_surface->setSelectionMode(QAbstract3DGraph::SelectionItem);
-    m_surface->activeTheme()->setType(Q3DTheme::Theme(2));
+    m_surface->activeTheme()->setType(Q3DTheme::Theme(1));
 }
 
 void viewer_3d::set_draw_mode(QSurface3DSeries::DrawFlag df)
@@ -114,8 +116,8 @@ void viewer_3d::set_draw_mode(QSurface3DSeries::DrawFlag df)
 
 void viewer_3d::set_gradient(QLinearGradient gr)
 {
-    m_surface->seriesList().at(0)->setBaseGradient(gr);
-    m_surface->seriesList().at(0)->setColorStyle(Q3DTheme::ColorStyleRangeGradient);
+    m_series->setBaseGradient(gr);
+    m_series->setColorStyle(Q3DTheme::ColorStyleRangeGradient);
 
 }
 

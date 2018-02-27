@@ -4,5 +4,6 @@
         <file>grid.png</file>
         <file>save.png</file>
         <file>load.png</file>
+        <file>power.png</file>
     </qresource>
 </RCC>

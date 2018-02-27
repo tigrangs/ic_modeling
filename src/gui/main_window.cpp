@@ -84,7 +84,7 @@ void main_window::init_actions()
     m_tools->addAction(gs);
 
     // Show power widget
-    QAction* show_powers = new QAction("Show Powers");
+    QAction* show_powers = new QAction(QIcon(":icons/power.png"), "Show Powers");
     b = connect(show_powers, SIGNAL(triggered(bool)), this, SLOT(show_power_gallery()));
     assert(b);
     m_tools->addAction(show_powers);

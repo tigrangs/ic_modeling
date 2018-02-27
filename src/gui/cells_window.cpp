@@ -113,23 +113,40 @@ void cells_window::init()
     m_view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 //    m_view->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-    m_view->setBackgroundBrush(QBrush(Qt::black));
+//    m_view->setBackgroundBrush(QBrush(QColor(240,240,240,82)/*, Qt::Dense1Pattern)*/));
+    m_view->setBackgroundBrush(QBrush(Qt::gray));
 }
 
 void cells_window::fill_data(const files_parser::parser::power_cells & cells)
 {
+    double maxPow = 0;
+    foreach (auto i, cells) {
+        if (maxPow < i.power()) {
+            maxPow = i.power();
+        }
+    }
+    assert (maxPow != 0);
+
     foreach (auto i, cells) {
         QRectF r(QPoint(i.pos().first * 15, i.pos().second * 15),
                  QSize(qreal(i.width() * 15), qreal(i.height() * 15)));
         QPen pen;
         pen.setStyle(Qt::SolidLine);
         pen.setWidth(2);
-        pen.setColor(QColor(Qt::green));
-        QGraphicsRectItem* ri = m_scene->addRect(r, pen); // TODO add QPen and QBrush
+        pen.setColor(QColor(Qt::white));
+        QColor color;
+        qreal h = i.power()/maxPow * 256;
+        color.setHsl(256 - h, 240, 140);
+        QBrush br(color);
+        QGraphicsRectItem* ri = m_scene->addRect(r, pen, br); // TODO add QPen and QBrush
 /*        QGraphicsItem* ti = m_scene->addText(QString::fromStdString(i.name()), QFont("Times", 30));
         ti->setPos(r.center());*/
         ri->setToolTip(QString::fromStdString(i.name()));
         ri->setData(POWER, i.power());
+        ri->setFlags(QGraphicsItem::ItemIsMovable |
+                     QGraphicsItem::ItemIsSelectable |
+                     QGraphicsItem::ItemSendsGeometryChanges |
+                     QGraphicsItem::ItemSendsScenePositionChanges);
     }
     assert(m_scene != 0);
     assert(m_view != 0);
