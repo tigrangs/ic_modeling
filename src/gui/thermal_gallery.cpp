@@ -13,7 +13,7 @@ namespace gui {
 thermal_gallery::thermal_gallery(core::ic* ic, QRectF bRect, int itStep,  QWidget *parent) : QWidget(parent)
 {
     assert(ic != 0);
-    QGridLayout* layout = new QGridLayout;
+    QVBoxLayout* layout = new QVBoxLayout;
     setLayout(layout);
     QLinearGradient gr;
     gr.setColorAt(0.0, Qt::darkCyan);
@@ -40,18 +40,19 @@ thermal_gallery::thermal_gallery(core::ic* ic, QRectF bRect, int itStep,  QWidge
     }
 
 
-    int r = 0;
-    int c = 0;
+//    int r = 0;
+//    int c = 0;
 
     foreach (auto l, m_layers) {
         assert(l != 0);
-        layout->addWidget(l, r, c);
+        layout->addWidget(l);
+/*        layout->addWidget(l, r, c);
         if (c + 1 < 2) {
             ++c;
         } else {
             c = 0;
             ++r;
-        }
+        }*/
     }
 }
 
