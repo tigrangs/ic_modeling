@@ -35,6 +35,11 @@ public:
     void fill_data(core::layer *l);
     void set_gradient(QLinearGradient gr);
 
+    void toggle_mode_none();
+    void toggle_mode_item();
+    void toggle_mode_sliceRow();
+    void toggle_mode_sliceColumn();
+
 private:
     Q3DSurface* m_surface = 0;
     QSurface3DSeries* m_series = 0;

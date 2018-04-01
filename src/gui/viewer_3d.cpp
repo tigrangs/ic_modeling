@@ -2,9 +2,11 @@
 
 #include <core/layer.hpp>
 
+#include <QGroupBox>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QMessageBox>
+#include <QRadioButton>
 #include <QScreen>
 
 #include <cassert>
@@ -51,7 +53,68 @@ void viewer_3d::init()
     l->setMargin(0);
     l->addWidget(m_label);
     l->addWidget(container);
-    setLayout(l);
+    QHBoxLayout* hbl = new QHBoxLayout();
+    hbl->addLayout(l);
+    setLayout(hbl);
+    QGroupBox *selectionGroupBox = new QGroupBox(QStringLiteral("Selection Mode"));
+
+    QRadioButton *modeNoneRB = new QRadioButton();
+    modeNoneRB->setText(QStringLiteral("No selection"));
+    modeNoneRB->setChecked(false);
+
+    QRadioButton *modeItemRB = new QRadioButton();
+    modeItemRB->setText(QStringLiteral("Item"));
+    modeItemRB->setChecked(false);
+
+    QRadioButton *modeSliceRowRB = new QRadioButton();
+    modeSliceRowRB->setText(QStringLiteral("Row Slice"));
+    modeSliceRowRB->setChecked(false);
+
+    QRadioButton *modeSliceColumnRB = new QRadioButton();
+    modeSliceColumnRB->setText(QStringLiteral("Column Slice"));
+    modeSliceColumnRB->setChecked(false);
+
+    QVBoxLayout *selectionVBox = new QVBoxLayout;
+    selectionVBox->addWidget(modeNoneRB);
+    selectionVBox->addWidget(modeItemRB);
+    selectionVBox->addWidget(modeSliceRowRB);
+    selectionVBox->addWidget(modeSliceColumnRB);
+    selectionGroupBox->setLayout(selectionVBox);
+    hbl->addWidget(selectionGroupBox);
+
+    QObject::connect(modeNoneRB, &QRadioButton::toggled,
+                     this, &viewer_3d::toggle_mode_none);
+    QObject::connect(modeItemRB,  &QRadioButton::toggled,
+                     this, &viewer_3d::toggle_mode_item);
+    QObject::connect(modeSliceRowRB,  &QRadioButton::toggled,
+                     this, &viewer_3d::toggle_mode_sliceRow);
+    QObject::connect(modeSliceColumnRB,  &QRadioButton::toggled,
+                     this, &viewer_3d::toggle_mode_sliceColumn);
+}
+
+void viewer_3d::toggle_mode_none()
+{
+    assert(m_surface != 0);
+    m_surface->setSelectionMode(QAbstract3DGraph::SelectionNone);
+}
+
+void viewer_3d::toggle_mode_item()
+{
+    assert(m_surface != 0);
+    m_surface->setSelectionMode(QAbstract3DGraph::SelectionItem);
+}
+
+void viewer_3d::toggle_mode_sliceRow()
+{
+    assert(m_surface != 0);
+    m_surface->setSelectionMode(QAbstract3DGraph::SelectionItemAndRow
+                                | QAbstract3DGraph::SelectionSlice);
+}
+void viewer_3d::toggle_mode_sliceColumn()
+{
+    assert(m_surface != 0);
+    m_surface->setSelectionMode(QAbstract3DGraph::SelectionItemAndColumn
+                                | QAbstract3DGraph::SelectionSlice);
 }
 
 void viewer_3d::fill_data(core::layer* l)
@@ -102,7 +165,7 @@ void viewer_3d::fill_data(core::layer* l)
     m_surface->addSeries(m_series);
     m_series->setColorStyle(Q3DTheme::ColorStyleObjectGradient);
 
-    m_surface->setSelectionMode(QAbstract3DGraph::SelectionItem);
+//    m_surface->setSelectionMode(QAbstract3DGraph::SelectionItem);
     m_surface->activeTheme()->setType(Q3DTheme::Theme(1));
 }
 
