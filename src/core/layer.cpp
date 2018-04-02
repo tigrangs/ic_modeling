@@ -76,4 +76,18 @@ void layer::set_cell_value(unsigned r, unsigned c, double v)
     tc->set_value(v);
 }
 
+double layer::get_cell_value_1(unsigned r, unsigned c)
+{
+    cell* tc = m_cells[r][c];
+    assert(tc != 0);
+    return tc->value_1();
+}
+
+void layer::set_cell_value_1(unsigned r, unsigned c, double v)
+{
+    cell* tc = m_cells[r][c];
+    assert(tc != 0);
+    tc->set_value_1(v);
+}
+
 }

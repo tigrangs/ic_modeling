@@ -23,11 +23,17 @@ public:
     void set_value(double);
 
 public:
+    //TODO
+    double value_1() const;
+    void set_value_1(double);
+
+public:
     void dump(std::string&) const;
 
 private:
     void dump_I(std::string&) const;
     void dump_R(std::string&) const;
+    void dump_C(std::string&) const;
     void dump_Rsub(std::string&) const;
     void dump_R_right(std::string&) const;
     void dump_R_bottom(std::string&) const;
@@ -36,6 +42,7 @@ private:
 
 private:
     double m_value;
+    double m_value_1;
 };
 
 }

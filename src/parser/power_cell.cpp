@@ -5,13 +5,14 @@ namespace files_parser
 
 power_cell::power_cell(const std::string& n, position p,
                        double w, double h,
-                       double pw, unsigned l)
+                       double pw, unsigned l, double fr)
     : m_name(n)
     , m_pos(p)
     , m_width(w)
     , m_height(h)
     , m_power(pw)
     , m_layer(l)
+    , m_frequency(fr)
 {
 }
 
@@ -26,6 +27,7 @@ power_cell& power_cell::operator=(const power_cell& c)
     m_height = c.m_height;
     m_power = c.m_power;
     m_layer = c.m_layer;
+    m_frequency = c.m_frequency;
     return *this;
 }
 
@@ -37,6 +39,7 @@ power_cell::power_cell(const power_cell& c)
     m_height = c.m_height;
     m_power = c.m_power;
     m_layer = c.m_layer;
+    m_frequency = c.m_frequency;
 }
 
 const std::string& power_cell::name() const
@@ -67,6 +70,11 @@ double power_cell::power() const
 unsigned power_cell::layer() const
 {
     return m_layer;
+}
+
+double power_cell::frequency() const
+{
+    return m_frequency;
 }
 
 }

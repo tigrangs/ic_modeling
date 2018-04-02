@@ -64,6 +64,7 @@ private:
     power_cell::position get_position(const data_map&) const;
     double get_value_of(const data_map&, const std::string&) const;
     unsigned get_layer(const data_map&) const;
+    double get_frequency(const data_map& m) const;
 
 private:
     parser(const parser&) = delete;

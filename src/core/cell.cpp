@@ -26,6 +26,7 @@ cell::cell(unsigned r, unsigned c, const layer* l)
     , m_column(c)
     , m_layer(l)
     , m_value(0)
+    , m_value_1(0)
 {
 }
 
@@ -39,6 +40,16 @@ void cell::set_value(double v)
     m_value = v;
 }
 
+double cell::value_1() const
+{
+    return m_value_1;
+}
+
+void cell::set_value_1(double v)
+{
+    m_value_1 = v;
+}
+
 void cell::dump(std::string& s) const
 {
     const std::string i = std::to_string(m_row);
@@ -48,6 +59,7 @@ void cell::dump(std::string& s) const
     s += "\n* Cell " + i + space + j + space + k + " *\n";
     dump_I(s);
     dump_R(s);
+    dump_C(s);
     dump_Rsub(s);
     assert(m_layer != 0);
     if (m_row + 1 < m_layer->height()) {
@@ -143,6 +155,38 @@ void cell::dump_R(std::string& s) const
     tmp += space;
     tmp += R;
     tmp += "Ri"; //TODO
+
+    s += "\n";
+    s += tmp;
+}
+
+void cell::dump_C(std::string& s) const
+{
+    assert(m_layer != 0);
+    const std::string i = std::to_string(m_row);
+    const std::string j = std::to_string(m_column);
+    const std::string k = std::to_string(m_layer->id());
+
+    std::string tmp = "cCi_";
+    tmp += i;
+    tmp += devider;
+    tmp += j;
+    tmp += devider;
+    tmp += k;
+
+    tmp += space;
+    tmp += c;
+    tmp += i;
+    tmp += devider;
+    tmp += j;
+    tmp += devider;
+    tmp += k;
+
+    tmp += space + vss;
+
+    tmp += space;
+    tmp += "c=";
+    tmp += "Ci"; //TODO
 
     s += "\n";
     s += tmp;

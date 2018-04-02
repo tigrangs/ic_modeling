@@ -18,7 +18,8 @@ public:
                double w,
                double h,
                double pw,
-               unsigned l);
+               unsigned l,
+               double fr);
 
     power_cell& operator=(const power_cell&)/* = default*/;
     power_cell(const power_cell&)/* = default*/;
@@ -30,6 +31,7 @@ public:
     double height() const;
     double power() const;
     unsigned layer() const;
+    double frequency() const;
 
 private:
     std::string m_name;
@@ -38,6 +40,7 @@ private:
     double m_height;
     double m_power;
     unsigned m_layer;
+    double m_frequency;
 
 };
 

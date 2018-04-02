@@ -16,6 +16,7 @@ namespace gui
 {
 
 static const int POWER = 0;
+static const int FREQUENCY = 1;
 
 inline qreal round(qreal val, int step)
 {
@@ -143,6 +144,7 @@ void cells_window::fill_data(const files_parser::parser::power_cells & cells)
         ti->setPos(r.center());*/
         ri->setToolTip(QString::fromStdString(i.name()));
         ri->setData(POWER, i.power());
+        ri->setData(FREQUENCY, i.frequency());
         ri->setFlags(QGraphicsItem::ItemIsMovable |
                      QGraphicsItem::ItemIsSelectable |
                      QGraphicsItem::ItemSendsGeometryChanges |
@@ -204,6 +206,8 @@ void cells_window::dump_defined_values(std::string& netlist)
     const qreal lambda = 0.000233;
     qreal subThickness = 2.88;
     qreal h = 23.8;
+    const qreal C = 20.16;
+    const qreal r = 2329;
 
     qreal S = qPow(step, 2);
     qreal Rij = 1 / (lambda * h);
@@ -225,6 +229,12 @@ void cells_window::dump_defined_values(std::string& netlist)
     qreal Rsub =  subThickness/ (lambda * S);
 
     netlist += QString(".param Rsub = %1\n").arg(Rsub).toStdString();
+
+    ///////////////////////////     Ci       //////////////////////////////////////////
+    S = qPow(step, 2);
+    qreal Ci =  C*r*S*h;
+
+    netlist += QString(".param Ci = %1\n").arg(Ci).toStdString();
 }
 
 core::layer* cells_window::get_layer(int itStep)
@@ -256,6 +266,7 @@ core::layer* cells_window::get_layer(int itStep)
 
             m_scene->addItem(gridItem);
             qreal intersectP = 0;
+            qreal intersectFR = 0;
 
             QList<QGraphicsItem *>  collidingItemsList = gridItem->collidingItems();
             foreach(QGraphicsItem* item, collidingItemsList) {
@@ -270,6 +281,13 @@ core::layer* cells_window::get_layer(int itStep)
                     intersectP += intersectRect.height() * intersectRect.width() * pv /(gridItem->rect().height()* gridItem->rect().width());
                     //333 intersectP += intersectRect.height() * intersectRect.width() * node->getPower();
 
+                    v = ri->data(FREQUENCY);
+                    assert(v.isValid());
+                    double fr = v.toDouble();
+                    if (fr < 0) {
+                        continue;
+                    }
+                    intersectFR += intersectRect.height() * intersectRect.width() * fr /(gridItem->rect().height()* gridItem->rect().width());
                 }
             }
             m_scene->removeItem(gridItem);
@@ -280,6 +298,7 @@ core::layer* cells_window::get_layer(int itStep)
                theIPower = intersectP;
             }
             layer->set_cell_value(column, row, intersectP);
+            layer->set_cell_value_1(column, row, intersectFR == 0 ? -1 : intersectFR);
             ++column;
         }
         ++row;

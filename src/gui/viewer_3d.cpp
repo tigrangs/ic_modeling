@@ -83,6 +83,7 @@ void viewer_3d::init()
     selectionVBox->addWidget(modeItemRB);
     selectionVBox->addWidget(modeSliceRowRB);
     selectionVBox->addWidget(modeSliceColumnRB);
+    selectionVBox->setAlignment(Qt::AlignTop);
     selectionGroupBox->setLayout(selectionVBox);
     hbl->addWidget(selectionGroupBox);
 
@@ -148,7 +149,7 @@ void viewer_3d::fill_data(core::layer* l)
 
     m_series->setDrawMode(m_draw_mode);
    //m_series->setDrawMode(QSurface3DSeries::DrawSurfaceAndWireframe);
-    m_series->setFlatShadingEnabled(true);
+    //m_series->setFlatShadingEnabled(true);
 
     m_surface->axisX()->setLabelFormat("%.2f");
     m_surface->axisZ()->setLabelFormat("%.2f");

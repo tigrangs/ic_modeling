@@ -26,6 +26,8 @@ public:
 public:
     void set_cell_value(unsigned r, unsigned c, double v);
     double get_cell_value(unsigned r, unsigned c);
+    void set_cell_value_1(unsigned r, unsigned c, double v);
+    double get_cell_value_1(unsigned r, unsigned c);
 
 public:
     void dump(std::string&) const;
