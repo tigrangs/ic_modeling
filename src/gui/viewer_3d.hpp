@@ -43,6 +43,7 @@ public:
 private:
     Q3DSurface* m_surface = 0;
     QSurface3DSeries* m_series = 0;
+    QSurfaceDataProxy* m_data_proxy = 0;
     core::layer* m_layer = 0;
     QLabel* m_label = 0;
     QSurface3DSeries::DrawFlag m_draw_mode = QSurface3DSeries::DrawSurfaceAndWireframe;

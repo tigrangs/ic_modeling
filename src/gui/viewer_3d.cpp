@@ -2,6 +2,8 @@
 
 #include <core/layer.hpp>
 
+#include <QApplication>
+
 #include <QGroupBox>
 #include <QHBoxLayout>
 #include <QLabel>
@@ -46,8 +48,10 @@ void viewer_3d::init()
     m_surface->setAxisX(new QValue3DAxis);
     m_surface->setAxisY(new QValue3DAxis);
     m_surface->setAxisZ(new QValue3DAxis);
+    m_surface->scene()->activeCamera()->setCameraPreset(Q3DCamera::CameraPresetIsometricLeft);
 
-    m_series = new QSurface3DSeries();
+    m_data_proxy = new QSurfaceDataProxy();
+    m_series = new QSurface3DSeries(m_data_proxy);
     QVBoxLayout* l = new QVBoxLayout();
     m_label = new QLabel();
     l->setMargin(0);
@@ -90,6 +94,7 @@ void viewer_3d::init()
                      this, &viewer_3d::toggle_mode_sliceRow);
     QObject::connect(modeSliceColumnRB,  &QRadioButton::toggled,
                      this, &viewer_3d::toggle_mode_sliceColumn);
+    modeItemRB->setChecked(true);
 }
 
 void viewer_3d::toggle_mode_none()
@@ -123,38 +128,34 @@ void viewer_3d::fill_data(core::layer* l)
     m_label->setText(QString::fromStdString("Layer " + std::to_string(l->id())));
     QSurfaceDataArray *dataArray = new QSurfaceDataArray;
     std::cout<<l->height()<<std::endl;
-    dataArray->reserve(2*l->height()); //QT_BUG
+    dataArray->reserve(l->height());
     double max_value = 0;
-    for (unsigned i = 0 ; i < 2*l->height() ; ++i) { //QT_BUG
+    for (unsigned i = 0 ; i < l->height() ; ++i) {
         QSurfaceDataRow *newRow = new QSurfaceDataRow;
-        for (unsigned j = 0; j < 2*l->width(); ++j) { //QT_BUG
-            if (i >= l->height() || j >= l->width()) {
-                (*newRow) << QVector3D(i, 0, j);
-            } else {
+        for (unsigned j = 0; j < l->width(); ++j) {
                 double v = l->get_cell_value(i, j);
                 if (max_value < v) {
                     max_value = v;
                 }
-                (*newRow) << QVector3D(i, v, j);
-            }
+                (*newRow) << QVector3D(j, v, i);
         }
         *dataArray << newRow;
     }
     std::cout<<dataArray->size()<<std::endl;
 
-    m_series->dataProxy()->resetArray(dataArray);
+    m_data_proxy->resetArray(dataArray);
 
 
     m_series->setDrawMode(m_draw_mode);
-    //m_series->setDrawMode(QSurface3DSeries::DrawSurfaceAndWireframe);
-//    m_series->setFlatShadingEnabled(true);
+   //m_series->setDrawMode(QSurface3DSeries::DrawSurfaceAndWireframe);
+    m_series->setFlatShadingEnabled(true);
 
     m_surface->axisX()->setLabelFormat("%.2f");
     m_surface->axisZ()->setLabelFormat("%.2f");
 
-    m_surface->axisX()->setRange(0, l->height() - 1);
+    m_surface->axisZ()->setRange(0, l->height() - 1);
     m_surface->axisY()->setRange(0, max_value);
-    m_surface->axisZ()->setRange(0, l->width() - 1);
+    m_surface->axisX()->setRange(0, l->width() - 1);
 
     m_surface->axisX()->setLabelAutoRotation(30);
     m_surface->axisY()->setLabelAutoRotation(90);
@@ -163,9 +164,8 @@ void viewer_3d::fill_data(core::layer* l)
 
 
     m_surface->addSeries(m_series);
-    m_series->setColorStyle(Q3DTheme::ColorStyleObjectGradient);
+//    m_series->setColorStyle(Q3DTheme::ColorStyleObjectGradient);
 
-//    m_surface->setSelectionMode(QAbstract3DGraph::SelectionItem);
     m_surface->activeTheme()->setType(Q3DTheme::Theme(1));
 }
 
