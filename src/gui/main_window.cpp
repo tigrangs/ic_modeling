@@ -10,6 +10,8 @@
 #include <QAction>
 #include <QErrorMessage>
 #include <QFileDialog>
+#include <QMenu>
+#include <QMenuBar>
 #include <QLabel>
 #include <QLayout>
 #include <QSpinBox>
@@ -44,23 +46,41 @@ void main_window::init_toolbar()
 
 void main_window::init_actions()
 {
+    QMenuBar* mb = menuBar();
+    assert(mb != 0);
+    QMenu* file = new QMenu("File");
+    mb->addMenu(file);
+    QMenu* edit = new QMenu("Edit");
+    mb->addMenu(edit);
+    QMenu* create = new QMenu("Create");
+    mb->addMenu(create);
+    QMenu* generate = new QMenu("Generate");
+    mb->addMenu(generate);
+    QMenu* options = new QMenu("Options");
+    mb->addMenu(options);
+
     // Open
     QAction* load_ic = new QAction(QIcon(":icons/open.png"), "Open...");
     bool b = connect(load_ic, SIGNAL(triggered(bool)), this, SLOT(load_ic()));
     assert(b);
     m_tools->addAction(load_ic);
+    file->addAction(load_ic);
 
     // Save
-    QAction* save = new QAction(QIcon(":icons/save.png"), "Save Netlist");
+    QAction* save = new QAction(QIcon(":icons/save.png"), "Generate Netlist...");
     b = connect(save, SIGNAL(triggered(bool)), this, SLOT(save_netlist()));
     assert(b);
     m_tools->addAction(save);
+    generate->addAction(save);
 
     // Load netlist
-    QAction* load_netlist = new QAction(QIcon(":icons/load.png"), "Load");
+    QAction* load_netlist = new QAction(QIcon(":icons/load.png"), "Load simulation results...");
     b = connect(load_netlist, SIGNAL(triggered(bool)), this, SLOT(load_netlist()));
     assert(b);
     m_tools->addAction(load_netlist);
+    file->addAction(load_netlist);
+    file->addSeparator();
+    file->addAction("Exit");
 
     // Show grid
     QAction* show_grid = new QAction(QIcon(":icons/grid.png"), "Grid");
@@ -68,6 +88,13 @@ void main_window::init_actions()
     b = connect(show_grid, SIGNAL(toggled(bool)), this, SLOT(show_grid(bool)));
     assert(b);
     m_tools->addAction(show_grid);
+    edit->addAction(show_grid);
+    edit->addAction("Move");
+    edit->addAction("Resize");
+    edit->addAction("Zoom In");
+    edit->addAction("Zoom Out");
+    create->addAction("Cell");
+    options->addAction("General...");
 
     // Grid step
     QWidget* gsw = new QWidget;
@@ -84,10 +111,12 @@ void main_window::init_actions()
     m_tools->addAction(gs);
 
     // Show power widget
-    QAction* show_powers = new QAction(QIcon(":icons/power.png"), "Show Powers");
+    QAction* show_powers = new QAction(QIcon(":icons/power.png"), "Generate Powers Map");
     b = connect(show_powers, SIGNAL(triggered(bool)), this, SLOT(show_power_gallery()));
     assert(b);
     m_tools->addAction(show_powers);
+    generate->addAction(show_powers);
+    generate->addAction("Generate Thermal Map");
 }
 
 void main_window::load_ic()
