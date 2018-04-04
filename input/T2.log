@@ -1,0 +1,62 @@
+name=FSR; pos=(0, 0); width =1.5; height=16; power=0.1; layer=0;
+name=L2DataBank0; pos=(1.5, 0);	width =3.5; height=1.8; power=0.5; layer=0;
+name=L2B0; pos=(1.5, 1.8);	width =3.5; height=0.5; power=0.1; layer=0;
+name=L2DataBank1; pos=(1.5, 2.2);	width =3.5; height=1.8; power=0.5; layer=0;
+name=L2B1; pos=(1.5, 4);	width =3.5; height=0.5; power=0.1; layer=0;
+name=MCU0; pos=(1.5, 4.5);	width =2.5; height=1.2; power=0.1; layer=0;
+name=MCU1; pos=(1.5, 5.7);	width =2.5; height=1.2; power=0.1; layer=0;
+name=NCU; pos=(4, 4.5);	width =1; height=2.4; power=0.1; layer=0;
+name=L2B3; pos=(1.5, 7);	width =3.5; height=0.5; power=0.1; layer=0;
+name=L2DataBank3; pos=(1.5, 7.5);	width =3.5; height=1.8; power=0.5; layer=0;
+name=L2B2; pos=(1.5, 9.3);	width =3.5; height=0.5; power=0.1; layer=0;
+name=L2DataBank2; pos=(1.5, 9.8);	width =3.5; height=1.8; power=0.5; layer=0;
+name=DMU; pos=(1.5, 11.6);	width =3.5; height=1.5; power=0.1; layer=0;
+name=PEU; pos=(1.5, 13.1);	width =3.5; height=1.5; power=0.1; layer=0;
+name=PSR; pos=(1.5, 14.6);	width =3; height=1; power=0.1; layer=0;
+name=CORE0; pos=(5, 0);	width =2.8; height=4.8; power=1; layer=0;
+name=CORE1; pos=(8, 0);	width =2.8; height=4.8; power=1; layer=0;
+name=CORE5; pos=(11, 0); width =2.8; height=4.8; power=1; layer=0;
+name=CORE4; pos=(14, 0); width =2.8; height=4.8; power=1; layer=0;
+name=L2TAG0; pos=(5, 4.8);	width =2.8; height=1.5; power=0.2; layer=0;
+name=L2TAG1; pos=(8, 4.8);	width =2.8; height=1.5; power=0.2; layer=0;
+name=L2TAG5; pos=(11, 4.8);	width =2.8; height=1.5; power=0.2; layer=0;
+name=L2TAG4; pos=(14, 4.8);	width =2.8; height=1.5; power=0.2; layer=0;
+name=L2DataBank4; pos=(17, 0);	width =3.5; height=1.8; power=0.5; layer=0;
+name=L2B4; pos=(17, 1.8);	width =3.5; height=0.5; power=0.1; layer=0;
+name=L2DataBank5; pos=(17, 2.2);	width =3.5; height=1.8; power=0.5; layer=0;
+name=L2B5; pos=(17, 4);	width =3.5; height=0.5; power=0.1; layer=0;
+name=MCU2; pos=(18, 4.5);	width =2.5; height=1.2; power=0.1; layer=0;
+name=MCU3; pos=(18, 5.7);	width =2.5; height=1.2; power=0.1; layer=0;
+name=MCU3; pos=(17, 5.4);	width =1; height=1.5; power=0.1; layer=0;
+name=L2B7; pos=(17, 7);	width =3.5; height=0.5; power=0.1; layer=0;
+name=L2DataBank7; pos=(17, 7.5);	width =3.5; height=1.8; power=0.5; layer=0;
+name=L2B6; pos=(17, 9.3);	width =3.5; height=0.5; power=0.1; layer=0;
+name=L2DataBank6; pos=(17, 9.8);	width =3.5; height=1.8; power=0.5; layer=0;
+name=RDP; pos=(17, 11.8);	width =2.4; height=3; power=0.1; layer=0;
+name=TDS; pos=(19.5, 11.8);	width =2.4; height=3; power=0.1; layer=0;
+name=RTX; pos=(17, 15);	width =4.8; height=1.8; power=0.1; layer=0;
+name=FSR1; pos=(20.5, 0); width =1.5; height=11.8; power=0.1; layer=0;
+name=SII; pos=(5.8, 6.5);	width =2; height=2; power=0.5; layer=0;
+name=CCX; pos=(8, 6.5);	width =5.5; height=2; power=0.8; layer=0;
+name=SIO; pos=(13.7, 6.5);	width =1; height=2; power=0.6; layer=0;
+name=CCU; pos=(14.9, 7.3);	width =1.5; height=1.2; power=0.4; layer=0;
+name=L2TAG2; pos=(5, 9);	width =2.8; height=1.5; power=0.2; layer=0;
+name=L2TAG3; pos=(8, 9);	width =2.8; height=1.5; power=0.2; layer=0;
+name=L2TAG7; pos=(11, 9);	width =2.8; height=1.5; power=0.2; layer=0;
+name=L2TAG6; pos=(14, 9);	width =2.8; height=1.5; power=0.2; layer=0;
+name=CORE2; pos=(5, 10.5);	width =2.8; height=4.8; power=1; layer=0;
+name=CORE3; pos=(8, 10.5);	width =2.8; height=4.8; power=1; layer=0;
+name=CORE7; pos=(11, 10.5);	width =2.8; height=4.8; power=1; layer=0;
+name=CORE6; pos=(14, 10.5);	width =2.8; height=4.8; power=1; layer=0;
+name=ESR; pos=(5.2, 15.5);	width =3; height=1; power=0.1; layer=0;
+name=FSR2; pos=(8.3, 15.5);	width =5.5; height=1; power=0.1; layer=0;
+name=FSR3; pos=(13.8, 15.5);	width =2.7; height=1; power=0.1; layer=0;
+
+
+
+
+
+
+
+
+
