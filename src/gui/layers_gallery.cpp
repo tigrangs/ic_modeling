@@ -113,7 +113,7 @@ std::string layers_gallery::dump_netlist()
     content += "\n\n.option post probe\n\n";
     content += ".global gnd\n";
     content += ".probe v(*) i(*)\n";
-    content += ".tran 10p 5n\n\n";
+    content += ".tran 0.01u 1u\n\n";
     content += ".end";
     return content;
 }
