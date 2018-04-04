@@ -78,6 +78,7 @@ void cell::dump_I(std::string& s) const
     const std::string j = std::to_string(m_column);
     const std::string k = std::to_string(m_layer->id());
     const std::string cv = std::to_string(m_value);
+    const std::string fr = std::to_string(m_value_1 * 500);
     std::string tmp = ".param";
     tmp += space;
     tmp += "i" ;
@@ -116,8 +117,23 @@ void cell::dump_I(std::string& s) const
     tmp += devider;
     tmp += k;
     tmp += space;
-    tmp += "ac = 0\n";
+    tmp += "ac = 0";
 
+    tmp += space;
+    tmp += "sin(0";
+    tmp += space;
+    tmp += "i" ;
+    tmp += devider;
+    tmp += i;
+    tmp += devider;
+    tmp += j;
+    tmp += devider;
+    tmp += k;
+    tmp += space;
+    tmp += "'";
+    tmp += fr;
+    tmp += "meg";
+    tmp += "' 0 0 0)\n";
     s += tmp;
 }
 
