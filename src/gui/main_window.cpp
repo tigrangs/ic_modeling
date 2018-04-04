@@ -117,6 +117,7 @@ void main_window::init_actions()
     m_tools->addAction(show_powers);
     generate->addAction(show_powers);
     generate->addAction("Generate Thermal Map");
+    generate->addAction("Optimize placement");
 }
 
 void main_window::load_ic()
