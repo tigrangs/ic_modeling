@@ -36,6 +36,7 @@ void main_window::init()
     setCentralWidget(m_gallery);
     init_toolbar();
     init_actions();
+    setWindowTitle("Thermal Modeling and Improvement Compiler");
 }
 
 void main_window::init_toolbar()
