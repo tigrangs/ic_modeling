@@ -10,10 +10,13 @@
 #include <QAction>
 #include <QErrorMessage>
 #include <QFileDialog>
+#include <QFormLayout>
 #include <QMenu>
 #include <QMenuBar>
 #include <QLabel>
 #include <QLayout>
+#include <QLineEdit>
+#include <QPushButton>
 #include <QSpinBox>
 #include <QToolBar>
 #include <QWidgetAction>
@@ -95,7 +98,7 @@ void main_window::init_actions()
     edit->addAction("Zoom In");
     edit->addAction("Zoom Out");
     create->addAction("Cell");
-    options->addAction("General...");
+    options->addAction("General...", this, &main_window::show_general_options);
 
     // Grid step
     QWidget* gsw = new QWidget;
@@ -192,6 +195,29 @@ void main_window::show_power_gallery()
     assert(ic != 0);
     power_gallery* pg = new power_gallery(ic);
     pg->show();
+}
+
+void main_window::show_general_options()
+{
+    QDialog d;
+    d.setWindowTitle("General Options");
+    QFormLayout* fl = new QFormLayout();
+    fl->setLabelAlignment(Qt::AlignRight);
+    QSpinBox* sb = new QSpinBox();
+    sb->setMinimum(1);
+    sb->setMaximum(1000);
+    bool b = connect(sb, SIGNAL(valueChanged(int)), this, SLOT(grid_size_changed(int)));
+    assert(b);
+    QHBoxLayout* hbl = new QHBoxLayout;
+    hbl->addWidget(sb);
+    hbl->addWidget(new QLabel("um"));
+    fl->addRow("Grid step:", hbl);
+    hbl = new QHBoxLayout;
+    hbl->addWidget(new QLineEdit("/remote/u/tigrangs/hspice/saed32nm.lib"));
+    hbl->addWidget(new QPushButton("Browse..."));
+    fl->addRow("Standard cells library path:", hbl);
+    d.setLayout(fl);
+    d.exec();
 }
 
 }

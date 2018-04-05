@@ -23,6 +23,7 @@ private slots:
     void save_netlist();
     void load_netlist();
     void show_power_gallery();
+    void show_general_options();
 
 private:
     void init();
