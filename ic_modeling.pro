@@ -15,7 +15,9 @@ SOURCES += \
     src/gui/layers_gallery.cpp \
     src/gui/thermal_gallery.cpp \
     src/gui/viewer_3d.cpp \
-    src/gui/power_gallery.cpp
+    src/gui/power_gallery.cpp \
+    src/controller/matrix_cell.cpp \
+    src/controller/matrix_layer.cpp \
 
 HEADERS += \
     src/core/cell.hpp \
@@ -28,7 +30,9 @@ HEADERS += \
     src/gui/layers_gallery.hpp \
     src/gui/thermal_gallery.hpp \
     src/gui/viewer_3d.hpp \
-    src/gui/power_gallery.hpp
+    src/gui/power_gallery.hpp \
+    src/controller/matrix_cell.hpp \
+    src/controller/matrix_layer.hpp \
 
 DISTFILES +=
 

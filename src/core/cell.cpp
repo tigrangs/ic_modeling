@@ -118,6 +118,7 @@ void cell::dump_I(std::string& s) const
     tmp += k;
     tmp += space;
     tmp += "ac = 0";
+//    tmp += "\n";
 
     tmp += space;
     tmp += "sin(0";

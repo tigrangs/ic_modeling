@@ -1,6 +1,8 @@
 #include "cells_window.hpp"
 
 #include <core/layer.hpp>
+#include <controller/matrix_cell.hpp>
+#include <controller/matrix_layer.hpp>
 
 #include <QGraphicsRectItem>
 #include <QGraphicsScene>
@@ -233,8 +235,9 @@ void cells_window::dump_defined_values(std::string& netlist)
     ///////////////////////////     Ci       //////////////////////////////////////////
     S = qPow(step, 2);
     qreal Ci =  C*r*S*h;
+    Ci = 600; //forced
 
-    netlist += QString(".param Ci = %1\n").arg(Ci).toStdString();
+    netlist += QString(".param Ci = %1p\n").arg(Ci).toStdString();
 }
 
 core::layer* cells_window::get_layer(int itStep)
@@ -253,7 +256,7 @@ core::layer* cells_window::get_layer(int itStep)
     unsigned w = static_cast<unsigned>((xEnd - xStart) / itStep) + 1;
     unsigned h = static_cast<unsigned>((yEnd - yStart) / itStep) + 1;
 
-    core::layer* layer = new core::layer(m_id, w, h);
+    core::layer* layer = new controller::matrix_layer(m_id, w, h);
 
     qreal theIPower =0.2;
 
@@ -268,6 +271,8 @@ core::layer* cells_window::get_layer(int itStep)
             qreal intersectP = 0;
             qreal intersectFR = 0;
 
+            double max_value = 0;
+            QGraphicsRectItem* max_item = 0;
             QList<QGraphicsItem *>  collidingItemsList = gridItem->collidingItems();
             foreach(QGraphicsItem* item, collidingItemsList) {
                 QGraphicsRectItem* ri = dynamic_cast<QGraphicsRectItem*>(item);
@@ -278,7 +283,13 @@ core::layer* cells_window::get_layer(int itStep)
                     assert(v.isValid());
                     double pv = v.toDouble();
                     ///intersectP += intersectRect.height() * intersectRect.width() * node->getPower() / S;
-                    intersectP += intersectRect.height() * intersectRect.width() * pv /(gridItem->rect().height()* gridItem->rect().width());
+
+                    double value = intersectRect.height() * intersectRect.width() * pv /(gridItem->rect().height()* gridItem->rect().width());
+                    if (value > max_value) {
+                        max_value = value;
+                        max_item = ri;
+                    }
+                    intersectP += value;
                     //333 intersectP += intersectRect.height() * intersectRect.width() * node->getPower();
 
                     v = ri->data(FREQUENCY);
@@ -299,6 +310,9 @@ core::layer* cells_window::get_layer(int itStep)
             }
             layer->set_cell_value(column, row, intersectP);
             layer->set_cell_value_1(column, row, intersectFR == 0 ? -1 : intersectFR);
+            controller::matrix_cell* cell = static_cast<controller::matrix_cell*>(layer->get_cell(column, row));
+            cell->add_item(max_item);
+            cell->set_source_position(row, column);
             ++column;
         }
         ++row;

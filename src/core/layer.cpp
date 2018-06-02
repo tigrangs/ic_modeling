@@ -29,9 +29,21 @@ void layer::init()
         for (unsigned i = 0; i < m_height; ++i) {
                 m_cells[i].reserve(m_width);
                 for (unsigned j = 0; j < m_width; ++j) {
-                        m_cells[i][j] = new cell(i, j, this);
+                        m_cells[i][j] = create_cell(i, j);
                 }
         }
+}
+
+cell* layer::create_cell(unsigned r, unsigned c)
+{
+    return new cell(r, c, this);
+}
+
+cell* layer::get_cell(unsigned r, unsigned c)
+{
+    assert(r < m_height);
+    assert(c <m_width);
+    return m_cells[r][c];
 }
 
 unsigned layer::id() const

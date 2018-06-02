@@ -16,7 +16,7 @@ public:
 
 public:
     layer(unsigned id, unsigned width, unsigned height);
-    ~layer();
+    virtual ~layer();
 
 public:
     unsigned id() const;
@@ -30,7 +30,13 @@ public:
     double get_cell_value_1(unsigned r, unsigned c);
 
 public:
+    cell* get_cell(unsigned r, unsigned c);
+
+public:
     void dump(std::string&) const;
+
+public:
+    virtual cell* create_cell(unsigned r, unsigned c);
 
 private:
     void init();
