@@ -11,6 +11,7 @@
 #include <parser/parser.hpp>
 
 #include <QAction>
+#include <QElapsedTimer>
 #include <QErrorMessage>
 #include <QFileDialog>
 #include <QFormLayout>
@@ -28,6 +29,7 @@
 #include <QDebug>
 
 #include <cassert>
+#include <iostream>
 
 namespace gui
 {
@@ -156,7 +158,10 @@ void main_window::load_ic()
 void main_window::save_netlist()
 {
     QString f = QFileDialog::getExistingDirectory(this);
+    QElapsedTimer tm;
+    tm.start();
     std::string content = m_gallery->dump_netlist();
+    std::cout<<tm.elapsed()<<std::endl;
     QFile nf(f + "/netlist.sp");
     if (!nf.open(QFile::WriteOnly)) {
         QErrorMessage em;
@@ -221,10 +226,27 @@ void main_window::show_general_options()
     hbl->addWidget(new QLabel("um"));
     fl->addRow("Grid step:", hbl);
     hbl = new QHBoxLayout;
-    hbl->addWidget(new QLineEdit("/remote/u/tigrangs/hspice/saed32nm.lib"));
+    hbl->addWidget((new QLineEdit("/remote/u/tigrangs/hspice/saed32nm.lib")));
     hbl->addWidget(new QPushButton("Browse..."));
     fl->addRow("Standard cells library path:", hbl);
+    hbl = new QHBoxLayout;
+    hbl->addWidget((new QLineEdit()));
+    hbl->addWidget(new QLabel("MHz"));
+    fl->addRow("Working frequency:",hbl);
+    hbl = new QHBoxLayout;
+    hbl->addWidget((new QLineEdit()));
+    hbl->addWidget(new QLabel("um"));
+    fl->addRow("Substrate height:", hbl);
+    hbl = new QHBoxLayout;
+    hbl->addWidget((new QLineEdit()));
+    hbl->addWidget(new QLabel("W/(m⋅K)"));
+    fl->addRow("Specific thermal conductivity:", hbl);
+    hbl = new QHBoxLayout;
+    hbl->addWidget((new QLineEdit()));
+    hbl->addWidget(new QLabel("kg/(m^3)"));
+    fl->addRow("Density:", hbl);
     d.setLayout(fl);
+    d.setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     d.exec();
 }
 
