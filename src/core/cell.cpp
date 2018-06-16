@@ -1,6 +1,9 @@
 #include "cell.hpp"
 #include "layer.hpp"
 
+#include "submatrix.hpp"
+
+#include <vector>
 #include <cassert>
 
 namespace core
@@ -434,6 +437,18 @@ void cell::dump_r_bottom(std::string& s) const
 
     s += "\n";
     s += tmp;
+}
+
+void cell::add_submatrix(submatrix* sub)
+{
+    m_observers.push_back(sub);
+}
+
+void cell::notify_all() //TODO call after swap
+{
+    for (auto i: m_observers) {
+        i->invalidate();
+    }
 }
 
 }

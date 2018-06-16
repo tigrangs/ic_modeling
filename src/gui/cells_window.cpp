@@ -272,8 +272,8 @@ core::layer* cells_window::get_layer(int itStep)
             qreal intersectFR = 0;
 
             double max_value = 0;
-            QGraphicsRectItem* max_item = 0;
             QList<QGraphicsItem *>  collidingItemsList = gridItem->collidingItems();
+            QGraphicsRectItem* max_item = collidingItemsList.size() != 0 ? dynamic_cast<QGraphicsRectItem*>(collidingItemsList[0]) : 0;
             foreach(QGraphicsItem* item, collidingItemsList) {
                 QGraphicsRectItem* ri = dynamic_cast<QGraphicsRectItem*>(item);
                 if (ri) {
@@ -311,7 +311,10 @@ core::layer* cells_window::get_layer(int itStep)
             layer->set_cell_value(column, row, intersectP);
             layer->set_cell_value_1(column, row, intersectFR == 0 ? -1 : intersectFR);
             controller::matrix_cell* cell = static_cast<controller::matrix_cell*>(layer->get_cell(column, row));
-            cell->add_item(max_item);
+            if (max_item != 0) {
+                qDebug()<<QString::fromStdString("ITEM_was_added");
+                cell->add_item(max_item);
+            }
             cell->set_source_position(row, column);
             ++column;
         }

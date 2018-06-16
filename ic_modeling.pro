@@ -18,6 +18,8 @@ SOURCES += \
     src/gui/power_gallery.cpp \
     src/controller/matrix_cell.cpp \
     src/controller/matrix_layer.cpp \
+    src/core/submatrix.cpp \
+    src/controller/genetic_improvement.cpp
 
 HEADERS += \
     src/core/cell.hpp \
@@ -33,6 +35,8 @@ HEADERS += \
     src/gui/power_gallery.hpp \
     src/controller/matrix_cell.hpp \
     src/controller/matrix_layer.hpp \
+    src/core/submatrix.hpp \
+    src/controller/genetic_improvement.hpp
 
 DISTFILES +=
 

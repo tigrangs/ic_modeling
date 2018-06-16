@@ -5,6 +5,9 @@
 
 #include <core/ic.hpp>
 #include <core/layer.hpp>
+#include <controller/matrix_layer.hpp>
+#include <controller/matrix_cell.hpp>
+#include <controller/genetic_improvement.hpp>
 #include <parser/parser.hpp>
 
 #include <QAction>
@@ -20,6 +23,9 @@
 #include <QSpinBox>
 #include <QToolBar>
 #include <QWidgetAction>
+#include <QVariant>
+
+#include <QDebug>
 
 #include <cassert>
 
@@ -121,7 +127,9 @@ void main_window::init_actions()
     m_tools->addAction(show_powers);
     generate->addAction(show_powers);
     generate->addAction("Generate Thermal Map");
-    generate->addAction("Optimize placement");
+    QAction* opt = generate->addAction("Optimize placement");
+    b = connect(opt, SIGNAL(triggered(bool)), this, SLOT(optimize_placement()));
+    assert(b);
 }
 
 void main_window::load_ic()
@@ -218,6 +226,31 @@ void main_window::show_general_options()
     fl->addRow("Standard cells library path:", hbl);
     d.setLayout(fl);
     d.exec();
+}
+
+void main_window::optimize_placement()
+{
+    core::ic* ic = m_gallery->get_ic();
+    assert(ic != 0);
+    core::layer* l0 = ic->get_layer(0);
+    controller::matrix_layer* cl = static_cast<controller::matrix_layer*>(l0);
+    assert(cl != 0);
+    controller::genetic_improvement gi(cl, 2);
+    gi.run();
+    for (unsigned i = 0; i < cl->height(); ++i) {
+        for (unsigned j = 0; j < cl->width(); ++j) {
+            core::cell* c = cl->get_cell(i,j);
+            controller::matrix_cell* mc = static_cast<controller::matrix_cell*>(c);
+            QGraphicsRectItem* ri = mc->get_item();
+            if (ri != 0) {
+                QVariant v = ri->data(0);
+                assert(v.isValid());
+                double pv = v.toDouble();
+                qDebug()<<QString::number(pv);
+                ri->setPos(j*m_gallery->get_grid_size(), i*m_gallery->get_grid_size());
+            }
+        }
+    }
 }
 
 }

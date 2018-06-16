@@ -2,11 +2,22 @@
 #define CELL_HPP
 
 #include <string>
+#include <vector>
 
 namespace core
 {
 
 class layer;
+class submatrix;
+
+struct index
+{
+    index(unsigned r, unsigned c)
+        : m_row(r), m_column(c)
+    {}
+    unsigned m_row;
+    unsigned m_column;
+};
 
 class cell
 {
@@ -14,8 +25,8 @@ public:
     cell(unsigned r, unsigned c, const layer* l);
 
 private:
-    unsigned m_row;
-    unsigned m_column;
+    const unsigned m_row;
+    const unsigned m_column;
     const layer* m_layer;
 
 public:
@@ -39,6 +50,14 @@ private:
     void dump_R_bottom(std::string&) const;
     void dump_r_right(std::string&) const;
     void dump_r_bottom(std::string&) const;
+
+public:
+    void add_submatrix(submatrix*);
+    void notify_all();
+
+private:
+    using observers = std::vector<submatrix*>;
+    observers m_observers;
 
 private:
     double m_value;

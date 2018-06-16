@@ -21,4 +21,19 @@ void matrix_cell::add_item(QGraphicsRectItem *item)
     m_item = item;
 }
 
+QGraphicsRectItem* matrix_cell::get_item()
+{
+    return m_item;
+}
+
+unsigned matrix_cell::source_column() const
+{
+    return m_source_column;
+}
+
+unsigned matrix_cell::source_row() const
+{
+    return m_source_row;
+}
+
 }

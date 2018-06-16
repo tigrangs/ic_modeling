@@ -24,6 +24,7 @@ private slots:
     void load_netlist();
     void show_power_gallery();
     void show_general_options();
+    void optimize_placement();
 
 private:
     void init();

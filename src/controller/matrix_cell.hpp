@@ -18,6 +18,11 @@ public:
 
 public:
     void add_item(QGraphicsRectItem* item);
+    QGraphicsRectItem* get_item();
+
+public:
+    unsigned source_row() const;
+    unsigned source_column() const;
 
 private:
     QGraphicsRectItem* m_item = 0;
