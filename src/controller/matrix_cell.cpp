@@ -6,8 +6,12 @@ namespace controller {
 
 matrix_cell::matrix_cell(unsigned r, unsigned c, const core::layer* l)
     : core::cell(r, c, l)
+    , m_item(0)
 {
 }
+
+matrix_cell::~matrix_cell()
+{}
 
 void matrix_cell::set_source_position(unsigned r, unsigned c)
 {

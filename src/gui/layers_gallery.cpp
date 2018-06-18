@@ -3,6 +3,7 @@
 #include "cells_window.hpp"
 
 #include <core/ic.hpp>
+#include <core/layer.hpp>
 
 #include <QGraphicsScene>
 #include <QGridLayout>
@@ -10,6 +11,7 @@
 #include <QtAlgorithms>
 
 #include <cassert>
+#include <iostream>
 
 namespace gui
 {
@@ -76,6 +78,14 @@ void layers_gallery::layout_layers()
     }
 }
 
+void layers_gallery::fit()
+{
+    foreach (auto l, m_layers) {
+        assert(l != 0);
+        l->fit();
+    }
+}
+
 void layers_gallery::show_grid(bool s)
 {
     foreach (auto l, m_layers) {
@@ -130,10 +140,12 @@ int layers_gallery::get_grid_size() const
 
 core::ic* layers_gallery::get_ic()
 {
+    std::cout<<"GET_IC"<<std::endl;
     std::vector<core::layer*> layers;
     foreach (auto l, m_layers) {
         assert(l != 0);
-        layers.push_back(l->get_layer(5));
+        layers.push_back(l->get_layer(get_grid_size()));
+        std::cout<<"GET_IC_layer "<<layers.back()->id()<<std::endl;
     }
     return new core::ic(layers);
 }

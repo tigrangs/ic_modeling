@@ -34,6 +34,9 @@ public:
     void dump_netlist(std::string&);
     core::layer* get_layer(int);
 
+public:
+    void fit();
+
 private:
     void dump_defined_values(std::string&);
     void dump_cells(std::string&);

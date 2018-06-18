@@ -3,15 +3,23 @@
 
 namespace controller {
 
+class matrix_cell_factory : public core::cell_factory
+{
+public:
+    core::cell* create_cell(unsigned r, unsigned c, core::layer *l)
+    {
+        return new matrix_cell(r, c, l);
+    }
+
+};
+
 matrix_layer::matrix_layer(unsigned id, unsigned width, unsigned height)
-    : core::layer(id, width, height)
+    : core::layer(id, width, height, new matrix_cell_factory)
 {
 }
 
-core::cell* matrix_layer::create_cell(unsigned r, unsigned c)
-{
-    return new matrix_cell(r, c, this);
-}
+matrix_layer::~matrix_layer()
+{}
 
 void matrix_layer::generate_submatrixes(const unsigned size)
 {

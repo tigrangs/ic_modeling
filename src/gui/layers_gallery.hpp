@@ -35,6 +35,8 @@ public:
     std::string dump_netlist();
     core::ic* get_ic();
 
+    void fit();
+
 private:
     void add_layers(const files_parser::parser::power_cells&);
     void cleanup_layers();

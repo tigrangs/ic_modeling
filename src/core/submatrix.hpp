@@ -3,6 +3,7 @@
 
 #include "cell.hpp"
 
+#include <memory>
 #include <vector>
 
 namespace core {
@@ -19,11 +20,11 @@ public:
 public:
     void invalidate();
 
-    cell* get_max_cell();
-    cell* get_min_cell();
+    std::shared_ptr<cell> get_max_cell();
+    std::shared_ptr<cell> get_min_cell();
 
 public:
-    using cells = std::vector<cell*>;
+    using cells = std::vector<std::shared_ptr<cell>>;
     cells& get_cells();
 
 private:

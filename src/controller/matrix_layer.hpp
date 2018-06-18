@@ -10,12 +10,10 @@ class matrix_layer : public core::layer
 {
 public:
     matrix_layer(unsigned id, unsigned width, unsigned height);
+    virtual ~matrix_layer();
 
 public:
     void generate_submatrixes(const unsigned size);
-
-private:
-    core::cell* create_cell(unsigned r, unsigned c) override;
 
 public:
     using submatrixes = std::vector<std::vector<core::submatrix*>>;

@@ -15,17 +15,17 @@ submatrix::submatrix(layer* layer, const unsigned size, index ind)
     assert(m_layer != 0);
     for(unsigned i = 0; i < m_size; ++i) {
         for(unsigned j = 0; j< m_size; ++j) {
-            cell* c = m_layer->get_cell(m_index.m_row + i, m_index.m_column + j);
+            std::shared_ptr<cell> c = m_layer->get_cell(m_index.m_row + i, m_index.m_column + j);
             c->add_submatrix(this);
             m_cells.push_back(c);
         }
     }
 }
 
-cell* submatrix::get_max_cell()
+std::shared_ptr<cell> submatrix::get_max_cell()
 {
     unsigned max = m_cells[0]->value();
-    cell* max_cell = m_cells[0];
+    std::shared_ptr<cell> max_cell = m_cells[0];
     for (auto i: m_cells) {
         if (i->value() > max) {
             max = i->value();
@@ -35,10 +35,10 @@ cell* submatrix::get_max_cell()
     return max_cell;
 }
 
-cell* submatrix::get_min_cell()
+std::shared_ptr<cell> submatrix::get_min_cell()
 {
     unsigned min = m_cells[0]->value();
-    cell* min_cell = m_cells[0];
+    std::shared_ptr<cell> min_cell = m_cells[0];
     for (auto i: m_cells) {
         if (i->value() < min) {
             min = i->value();

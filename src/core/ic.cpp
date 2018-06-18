@@ -2,6 +2,7 @@
 #include "layer.hpp"
 
 #include <cassert>
+#include <iostream>
 
 namespace core
 {
@@ -15,6 +16,7 @@ ic::ic(const std::vector<layer *> & v)
                 assert(v[i]->height() == H);
         }
         m_layers = v;
+        std::cout<<"IC"<<std::endl;
 }
 
 ic::ic(unsigned l, unsigned w, unsigned h)

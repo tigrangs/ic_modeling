@@ -13,6 +13,7 @@
 #include <QDebug>
 
 #include <cassert>
+#include <iostream>
 
 namespace gui
 {
@@ -167,6 +168,21 @@ void cells_window::fill_data(const files_parser::parser::power_cells & cells)
     m_scene->setSceneRect(br);
 }
 
+void cells_window::fit()
+{
+    QRectF br = m_scene->itemsBoundingRect();
+
+    QRectF sr = m_view->contentsRect();
+    qreal blength = br.width() < br.height() ? br.height() : br.width();
+    qreal length = sr.width() < sr.height() ? sr.height() : sr.width();
+    qreal length_factor = length/(blength*1.5);
+
+//    m_view->scale(1/length_factor,1/length_factor);
+    m_view->setAlignment(Qt::AlignCenter);
+    m_view->centerOn(br.center().x(), br.center().y());
+    m_scene->setSceneRect(br);
+}
+
 void cells_window::show_grid(bool s)
 {
     assert(m_scene != 0);
@@ -244,7 +260,7 @@ core::layer* cells_window::get_layer(int itStep)
 {
     assert(m_scene != 0);
     QRectF bRect = m_scene->itemsBoundingRect();
-    QPointF distPoint = QPoint(20,20);
+    QPointF distPoint = QPoint(0,0);
     QRectF cbRect(bRect.topLeft()-distPoint, bRect.bottomRight()+distPoint);
 
     qreal xStart = cbRect.topLeft().x();
@@ -255,9 +271,12 @@ core::layer* cells_window::get_layer(int itStep)
 
     unsigned w = static_cast<unsigned>((xEnd - xStart) / itStep) + 1;
     unsigned h = static_cast<unsigned>((yEnd - yStart) / itStep) + 1;
-
-    core::layer* layer = new controller::matrix_layer(m_id, w, h);
-
+    qDebug()<<QString::fromStdString("matrix size");
+    qDebug()<<QString::number(w);
+    qDebug()<<QString::number(h);
+    core::layer* layer = new controller::matrix_layer(m_id, h, w);
+    //core::layer* layer = new core::layer(m_id, h, w);
+    std::cout<<"created_matrix_layer"<<std::endl;
     qreal theIPower =0.2;
 
     int row = 0;
@@ -308,11 +327,15 @@ core::layer* cells_window::get_layer(int itStep)
             } else {
                theIPower = intersectP;
             }
-            layer->set_cell_value(column, row, intersectP);
-            layer->set_cell_value_1(column, row, intersectFR == 0 ? -1 : intersectFR);
-            controller::matrix_cell* cell = static_cast<controller::matrix_cell*>(layer->get_cell(column, row));
+            std::cout<<"set_value "<<row<<" "<<column<<std::endl;
+            layer->set_cell_value(row, column, intersectP);
+            layer->set_cell_value_1(row, column, intersectFR == 0 ? -1 : intersectFR);
+            std::shared_ptr<controller::matrix_cell> cell =
+                    std::static_pointer_cast<controller::matrix_cell>(layer->get_cell(row, column));
             if (max_item != 0) {
-                qDebug()<<QString::fromStdString("ITEM_was_added");
+                /*qDebug()<<QString::number(column);
+                qDebug()<<QString::number(row);
+                qDebug()<<QString::fromStdString("ITEM_was_added");*/
                 cell->add_item(max_item);
             }
             cell->set_source_position(row, column);

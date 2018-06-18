@@ -5,6 +5,7 @@
 
 #include <vector>
 #include <cassert>
+#include <iostream>
 
 namespace core
 {
@@ -31,6 +32,11 @@ cell::cell(unsigned r, unsigned c, const layer* l)
     , m_value(0)
     , m_value_1(0)
 {
+}
+
+cell::~cell()
+{
+    std::cout<<"Deleted_cell "<<m_row<<" "<<m_column<<std::endl;
 }
 
 double cell::value() const
@@ -121,9 +127,9 @@ void cell::dump_I(std::string& s) const
     tmp += k;
     tmp += space;
     tmp += "ac = 0";
-//    tmp += "\n";
+    tmp += "\n";
 
-    tmp += space;
+/*    tmp += space;
     tmp += "sin(0";
     tmp += space;
     tmp += "i" ;
@@ -137,7 +143,7 @@ void cell::dump_I(std::string& s) const
     tmp += "'";
     tmp += fr;
     tmp += "meg";
-    tmp += "' 0 0 0)\n";
+    tmp += "' 0 0 0)\n";*/
     s += tmp;
 }
 

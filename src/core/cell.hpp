@@ -23,6 +23,7 @@ class cell
 {
 public:
     cell(unsigned r, unsigned c, const layer* l);
+    virtual ~cell();
 
 private:
     const unsigned m_row;
@@ -62,6 +63,16 @@ private:
 private:
     double m_value;
     double m_value_1;
+};
+
+class cell_factory
+{
+public:
+    virtual core::cell* create_cell(unsigned r, unsigned c, core::layer* l)
+    {
+        return new core::cell(r, c, l);
+    }
+
 };
 
 }

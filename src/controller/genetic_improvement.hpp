@@ -20,6 +20,9 @@ private:
 private:
     matrix_layer* m_root_matrix;
     unsigned m_submatrix_size;
+    double m_max_value;
+    bool m_stop;
+    unsigned count;
 };
 
 }

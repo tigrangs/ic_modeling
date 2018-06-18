@@ -29,7 +29,7 @@ public:
         layer* get_layer(int);
 
 private:
-        layers m_layers = {};
+        layers m_layers;
 };
 
 }

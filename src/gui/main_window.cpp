@@ -15,6 +15,7 @@
 #include <QErrorMessage>
 #include <QFileDialog>
 #include <QFormLayout>
+#include <QGraphicsScene>
 #include <QMenu>
 #include <QMenuBar>
 #include <QLabel>
@@ -26,8 +27,7 @@
 #include <QWidgetAction>
 #include <QVariant>
 
-#include <QDebug>
-
+#include <memory>
 #include <cassert>
 #include <iostream>
 
@@ -252,27 +252,55 @@ void main_window::show_general_options()
 
 void main_window::optimize_placement()
 {
+    std::cout<<std::string("optimization")<<std::endl;
+    assert(m_gallery != 0);
     core::ic* ic = m_gallery->get_ic();
+    std::cout<<std::string("optimization_ic")<<std::endl;
     assert(ic != 0);
     core::layer* l0 = ic->get_layer(0);
     controller::matrix_layer* cl = static_cast<controller::matrix_layer*>(l0);
     assert(cl != 0);
-    controller::genetic_improvement gi(cl, 2);
+    controller::genetic_improvement gi(cl, 3);
     gi.run();
     for (unsigned i = 0; i < cl->height(); ++i) {
         for (unsigned j = 0; j < cl->width(); ++j) {
-            core::cell* c = cl->get_cell(i,j);
-            controller::matrix_cell* mc = static_cast<controller::matrix_cell*>(c);
+            std::shared_ptr<core::cell> c = cl->get_cell(i,j);
+            std::shared_ptr<controller::matrix_cell> mc =
+                    std::static_pointer_cast<controller::matrix_cell>(c);
             QGraphicsRectItem* ri = mc->get_item();
             if (ri != 0) {
                 QVariant v = ri->data(0);
                 assert(v.isValid());
                 double pv = v.toDouble();
-                qDebug()<<QString::number(pv);
-                ri->setPos(j*m_gallery->get_grid_size(), i*m_gallery->get_grid_size());
+                //                qDebug()<<ri->toolTip();
+                //                std::cout<<mc->source_row()<<" "<<mc->source_column()<<std::endl;
+                //                std::cout<<"RESET_DELETE"<<std::endl;
+                QRectF rct = ri->rect();
+                QRectF f(j*m_gallery->get_grid_size(), i*m_gallery->get_grid_size(),
+                         rct.width(), rct.height());
+
+                QPen pen;
+                pen.setStyle(Qt::SolidLine);
+                pen.setWidth(2);
+                pen.setColor(QColor(Qt::white));
+                QBrush br = ri->brush();
+                QGraphicsRectItem* nri = ri->scene()->addRect(f, pen, br/*, pen, br*/);
+                nri->setToolTip(ri->toolTip());
+                nri->setData(0, pv);
+                v = ri->data(1);
+                assert(v.isValid());
+                pv = v.toDouble();
+                nri->setData(1, pv);
+                nri->setFlags(QGraphicsItem::ItemIsMovable |
+                              QGraphicsItem::ItemIsSelectable |
+                              QGraphicsItem::ItemSendsGeometryChanges |
+                              QGraphicsItem::ItemSendsScenePositionChanges);
+                delete ri;
             }
         }
     }
+    m_gallery->fit();
+    std::cout<<std::string("optimization_end")<<std::endl;
 }
 
 }
