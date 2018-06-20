@@ -260,8 +260,9 @@ void main_window::optimize_placement()
     core::layer* l0 = ic->get_layer(0);
     controller::matrix_layer* cl = static_cast<controller::matrix_layer*>(l0);
     assert(cl != 0);
-    controller::genetic_improvement gi(cl, 3);
-    gi.run();
+    controller::genetic_improvement gi(cl, 2);
+    cl = gi.run();
+    assert(cl != 0);
     for (unsigned i = 0; i < cl->height(); ++i) {
         for (unsigned j = 0; j < cl->width(); ++j) {
             std::shared_ptr<core::cell> c = cl->get_cell(i,j);

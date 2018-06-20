@@ -24,7 +24,7 @@ submatrix::submatrix(layer* layer, const unsigned size, index ind)
 
 std::shared_ptr<cell> submatrix::get_max_cell()
 {
-    unsigned max = m_cells[0]->value();
+    double max = m_cells[0]->value();
     std::shared_ptr<cell> max_cell = m_cells[0];
     for (auto i: m_cells) {
         if (i->value() > max) {
@@ -37,7 +37,7 @@ std::shared_ptr<cell> submatrix::get_max_cell()
 
 std::shared_ptr<cell> submatrix::get_min_cell()
 {
-    unsigned min = m_cells[0]->value();
+    double min = m_cells[0]->value();
     std::shared_ptr<cell> min_cell = m_cells[0];
     for (auto i: m_cells) {
         if (i->value() < min) {
@@ -48,7 +48,7 @@ std::shared_ptr<cell> submatrix::get_min_cell()
     return min_cell;
 }
 
-unsigned submatrix::get_sum() const
+double submatrix::get_sum() const
 {
     if (!m_sum_is_valid) {
         recalculate_sum();

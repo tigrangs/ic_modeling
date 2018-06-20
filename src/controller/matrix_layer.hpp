@@ -12,6 +12,8 @@ public:
     matrix_layer(unsigned id, unsigned width, unsigned height);
     virtual ~matrix_layer();
 
+    matrix_layer *clone(core::cell_factory * = 0) override;
+
 public:
     void generate_submatrixes(const unsigned size);
 

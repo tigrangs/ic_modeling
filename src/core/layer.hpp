@@ -20,6 +20,8 @@ public:
     layer(unsigned id, unsigned width, unsigned height, cell_factory* f = 0);
     virtual ~layer();
 
+    virtual layer* clone(cell_factory* = 0);
+
 public:
     unsigned id() const;
     unsigned width() const;

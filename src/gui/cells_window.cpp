@@ -172,10 +172,10 @@ void cells_window::fit()
 {
     QRectF br = m_scene->itemsBoundingRect();
 
-    QRectF sr = m_view->contentsRect();
+/*    QRectF sr = m_view->contentsRect();
     qreal blength = br.width() < br.height() ? br.height() : br.width();
     qreal length = sr.width() < sr.height() ? sr.height() : sr.width();
-    qreal length_factor = length/(blength*1.5);
+    qreal length_factor = length/(blength*1.5);*/
 
 //    m_view->scale(1/length_factor,1/length_factor);
     m_view->setAlignment(Qt::AlignCenter);
@@ -256,11 +256,11 @@ void cells_window::dump_defined_values(std::string& netlist)
     netlist += QString(".param Ci = %1p\n").arg(Ci).toStdString();
 }
 
-core::layer* cells_window::get_layer(int itStep)
+core::layer* cells_window::get_layer(int itStep, int offset)
 {
     assert(m_scene != 0);
     QRectF bRect = m_scene->itemsBoundingRect();
-    QPointF distPoint = QPoint(0,0);
+    QPointF distPoint = QPoint(offset, offset);
     QRectF cbRect(bRect.topLeft()-distPoint, bRect.bottomRight()+distPoint);
 
     qreal xStart = cbRect.topLeft().x();

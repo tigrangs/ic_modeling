@@ -32,7 +32,7 @@ public:
     int get_grid_size() const;
     const QGraphicsScene* get_scene() const;
     void dump_netlist(std::string&);
-    core::layer* get_layer(int);
+    core::layer* get_layer(int, int = 20);
 
 public:
     void fit();

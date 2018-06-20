@@ -72,7 +72,8 @@ public:
     {
         return new core::cell(r, c, l);
     }
-
+public:
+    virtual ~cell_factory(){};
 };
 
 }

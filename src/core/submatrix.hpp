@@ -15,7 +15,7 @@ class submatrix
 public:
     submatrix(layer* layer,const unsigned size, index idx);
 
-    unsigned get_sum() const;
+    double get_sum() const;
 
 public:
     void invalidate();
@@ -36,7 +36,7 @@ private:
     cells m_cells;
     index m_index;
     mutable bool m_sum_is_valid;
-    mutable unsigned m_sum;
+    mutable double m_sum;
 };
 
 }

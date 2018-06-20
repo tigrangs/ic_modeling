@@ -27,6 +27,18 @@ layer::~layer()
     }*/
 }
 
+layer* layer::clone(cell_factory* f)
+{
+    layer* l = new layer(m_id, m_width, m_height, f);
+    for (unsigned i = 0; i < m_height; ++i) {
+        for (unsigned j = 0; j < m_width; ++j) {
+            l->set_cell_value(i, j, get_cell_value(i, j));
+            l->set_cell_value_1(i, j, get_cell_value_1(i, j));
+        }
+    }
+    return l;
+}
+
 void layer::init(cell_factory* f)
 {
     assert(f != 0);
@@ -40,6 +52,7 @@ void layer::init(cell_factory* f)
     }
     assert(m_cells.size() == m_height);
     assert(m_cells[0].size() == m_width);
+    delete f;
 }
 
 std::shared_ptr<cell> layer::get_cell(unsigned r, unsigned c)

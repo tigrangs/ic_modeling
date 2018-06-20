@@ -11,11 +11,12 @@ public:
     genetic_improvement(matrix_layer* l, unsigned size);
 
 public:
-    void run();
+    matrix_layer *run();
 
 private:
     void swap_items(matrix_layer::submatrixes&);
     void check_improvement(matrix_layer::submatrixes&);
+    double remove_matrixes();
 
 private:
     matrix_layer* m_root_matrix;
@@ -23,6 +24,8 @@ private:
     double m_max_value;
     bool m_stop;
     unsigned count;
+    using matrixes=std::vector<matrix_layer*>;
+    matrixes m_parents;
 };
 
 }

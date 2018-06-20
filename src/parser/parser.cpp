@@ -263,7 +263,7 @@ core::ic* parser::get_ic(const std::string& fn)
             baStr = baStr.remove('p');
             temp = baStr.toDouble()/1000000;
         } else {
-            temp = baStr.toDouble();//*1000000;
+            temp = baStr.toDouble();// *1000000;
         }*/
 //        temp_map[indexs(r, c, l)] = temp;
 //        tempMap.insert(Iidx, temp); TODO

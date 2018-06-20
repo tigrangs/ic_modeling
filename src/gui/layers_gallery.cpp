@@ -144,7 +144,7 @@ core::ic* layers_gallery::get_ic()
     std::vector<core::layer*> layers;
     foreach (auto l, m_layers) {
         assert(l != 0);
-        layers.push_back(l->get_layer(get_grid_size()));
+        layers.push_back(l->get_layer(get_grid_size(), 0));
         std::cout<<"GET_IC_layer "<<layers.back()->id()<<std::endl;
     }
     return new core::ic(layers);

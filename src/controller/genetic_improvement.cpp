@@ -22,22 +22,92 @@ genetic_improvement::genetic_improvement(matrix_layer* l, unsigned size)
     assert(m_root_matrix != 0);
 }
 
-void genetic_improvement::run()
+matrix_layer* genetic_improvement::run()
 {
     assert(m_root_matrix != 0);
-    m_root_matrix->generate_submatrixes(m_submatrix_size);
-    matrix_layer::submatrixes& subs = m_root_matrix->get_submatrixes();
-
+    for (unsigned i = 0; i < m_submatrix_size*m_submatrix_size; ++i) {
+        m_parents.push_back(m_root_matrix->clone());
+    }
     do {
-        swap_items(subs);
-        check_improvement(subs);
+        for (auto matrix: m_parents) {
+            assert(matrix != 0);
+            matrix->generate_submatrixes(m_submatrix_size);
+            matrix_layer::submatrixes& subs = matrix->get_submatrixes();
+            swap_items(subs);
+        }
+        double curent_max = remove_matrixes();
+        if (count >= 10000 || (qAbs(m_max_value - curent_max) < 0.1 && m_max_value != curent_max)) {
+            m_stop = true;
+            std::cout<<"MAX_value "<<m_max_value<<std::endl;
+            std::cout<<"MAX "<<curent_max<<std::endl;
+        } else {
+            std::cout<<"MAX_value "<<m_max_value<<std::endl;
+            std::cout<<"MAX "<<curent_max<<std::endl;
+            m_max_value = curent_max;
+        }
+        ++count;
+        //        check_improvement(subs);
     } while(!m_stop);
+    return m_parents[0];
+}
+
+double genetic_improvement::remove_matrixes()
+{
+    matrix_layer::submatrixes& subs = m_parents[0]->get_submatrixes();
+    double max = subs[0][0]->get_sum();
+    // Finding Wmax and Wmin
+    for (matrix_layer::submatrixes::iterator i = subs.begin(); i != subs.end(); ++i) {
+        for (std::vector<core::submatrix*>::iterator j = i->begin(); j != i->end(); ++j) {
+            assert(*j != 0);
+            double current = (*j)->get_sum();
+            if (max < current) {
+                max = current;
+            }
+        }
+    }
+    double min_max = max;
+    matrix_layer* min_layer = m_parents[0];
+
+
+
+    for (auto matrix: m_parents) {
+        assert(matrix != 0);
+        matrix_layer::submatrixes& subs = matrix->get_submatrixes();
+        double max = subs[0][0]->get_sum();
+        // Finding Wmax and Wmin
+        for (matrix_layer::submatrixes::iterator i = subs.begin(); i != subs.end(); ++i) {
+            for (std::vector<core::submatrix*>::iterator j = i->begin(); j != i->end(); ++j) {
+                assert(*j != 0);
+                double current = (*j)->get_sum();
+                if (max < current) {
+                    max = current;
+                }
+            }
+        }
+        if (min_max > max) {
+            min_max = max;
+            min_layer = matrix;
+        }
+    }
+    assert(min_max != -1);
+    assert(min_layer != 0);
+    matrixes::iterator it = std::find(m_parents.begin(), m_parents.end(), min_layer);
+    assert(it != m_parents.end());
+    m_parents.erase(it);
+    for (auto m : m_parents) {
+        delete m;
+    }
+    m_parents.clear();
+    for (unsigned i = 0; i < m_submatrix_size*m_submatrix_size; ++i) {
+        m_parents.push_back(min_layer->clone());
+    }
+    return min_max;
 }
 
 void genetic_improvement::swap_items(matrix_layer::submatrixes& subs)
 {
-    unsigned min = subs[0][0]->get_sum();
-    unsigned max = subs[0][0]->get_sum();
+    double min = subs[0][0]->get_sum();
+    double max = subs[0][0]->get_sum();
     core::submatrix* min_sub = subs[0][0];
     core::submatrix* max_sub = subs[0][0];
     // Finding Wmax and Wmin
@@ -55,6 +125,9 @@ void genetic_improvement::swap_items(matrix_layer::submatrixes& subs)
             }
         }
     }
+/*    if (m_min_max_value > max) {
+        m_min_max_value = max;
+    }*/
     m_max_value = max;
     std::cout<<"SUB_SIZE "<<subs.size()<<" "<<subs[0].size()<<std::endl;
     assert(min_sub != 0);
@@ -147,21 +220,25 @@ void genetic_improvement::swap_items(matrix_layer::submatrixes& subs)
 
 void genetic_improvement::check_improvement(matrix_layer::submatrixes & subs)
 {
-    unsigned max = subs[0][0]->get_sum();
+    double max = subs[0][0]->get_sum();
     // Finding Wmax and Wmin
     for (matrix_layer::submatrixes::iterator i = subs.begin(); i != subs.end(); ++i) {
         for (std::vector<core::submatrix*>::iterator j = i->begin(); j != i->end(); ++j) {
             assert(*j != 0);
-            unsigned current = (*j)->get_sum();
+            double current = (*j)->get_sum();
             if (max < current) {
                 max = current;
             }
         }
     }
 
-    if (count >= 10000 || ((m_max_value < max || m_max_value - max < 0.3) && m_max_value != max)) {
+    if (count >= 10000 || (qAbs(m_max_value - max) < 0.1 && m_max_value != max) /*(m_max_value < max || m_max_value - max < 0.3) && m_max_value != max)*/) {
         m_stop = true;
+        std::cout<<"MAX_value "<<m_max_value<<std::endl;
+        std::cout<<"MAX "<<max<<std::endl;
     } else {
+        std::cout<<"MAX_value "<<m_max_value<<std::endl;
+        std::cout<<"MAX "<<max<<std::endl;
         m_max_value = max;
     }
     ++count;
